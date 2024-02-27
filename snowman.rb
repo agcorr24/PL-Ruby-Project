@@ -8,25 +8,23 @@ set title: "Snowman Word Game", background: 'blue', resizable: true
 class Game
 
 	def initialize
+		#initialize all variables
     @word = read_file('dictionary.txt')
-		@guess = ""
     @out_of_guesses = false
 		@guess_limit = 6
-		
-
-		#Create snowman
+		@game_over = false
 		@snowman = []
-		# Snowman body, put in array
-		@snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
-		@snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
-		@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
+		start_game
+  end
 
+	def start_game
 		#initial message
 		Text.new("Welcome to the Snowman Word Game!", x: 50, y: 60, size: 20, color: 'white')
 		Text.new("Enter a letter please.", x: 50, y: 80, size: 20, color: 'white')
-
-		handle_input
-  end
+		puts "Starting game"
+		@game_started = true
+		#handle_input
+	end
 	
 	def read_file(filename)
 		# https://stackoverflow.com/questions/36140990/break-text-file-into-separate-words-and-store-in-array-in-ruby
@@ -49,43 +47,40 @@ class Game
 		puts "Random word: #{random_word}"
 		return random_word
 	end
-
+	
 	#https://www.ruby2d.com/learn/window/
 	def handle_input
-		return if @game_over
-	
-		update do
-			Text.new("Enter a letter:")
-			letter = gets.chomp.downcase
-			break if letter == "exit"
-			return unless letter =~ /[a-z]/
-			if @word.include?(letter)
-				@guesses << letter unless @guesses.include?(letter)
-		else
-			@guess_limit -= 1
-			update_snowman
-		end
-		update
-		check_game_over
-			break if @game_over
-		end
-  end
+		editing_guess #showing current state of the word
 
-	def update
+		puts "Enter a letter"
+		letter = gets.chomp.downcase
+		if letter == /[a-z]/
+			if @word.include?(letter)
+				@guesses.add(letter)
+			else
+				@guess_limit -= 1
+				update_snowman
+			end
+			check_game_over
+		end
+	end
+
+	def editing_guess
 		# https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
 		guesses = [] #letters guessed go into this array(starts as underscores)
 		guesses = @word.chars.map { |c| guesses.include?(c) ? c : '_' }.join(' ')
 		puts guesses 
+		Text.new(guesses)
   end
 
 	def update_snowman
     case @guess_limit
     when 5
-      @snowman << Line.new(x1: 300, y1: 400, x2: 300, y2: 340, width: 5, color: 'white')
+      @snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
     when 4
-      @snowman << Line.new(x1: 300, y1: 340, x2: 260, y2: 300, width: 5, color: 'white')
+      @snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
     when 3
-      @snowman << Line.new(x1: 300, y1: 340, x2: 340, y2: 300, width: 5, color: 'white')
+      @snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
     when 2
       @snowman << Line.new(x1: 300, y1: 280, x2: 260, y2: 240, width: 5, color: 'white')
     when 1
@@ -111,6 +106,7 @@ end
 
 
 game = Game.new
+
 
 show
 
