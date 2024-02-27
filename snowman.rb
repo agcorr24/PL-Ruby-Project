@@ -24,7 +24,7 @@ class Game
 		#initial message
 		Text.new("Welcome to the Snowman Word Game!", x: 50, y: 60, size: 20, color: 'white')
 		Text.new("Enter a letter please.", x: 50, y: 80, size: 20, color: 'white')
-		
+
 		handle_input
   end
 	
@@ -47,8 +47,10 @@ class Game
 		random_index = rand(words_array.length) # pick random word
 		random_word = words_array[random_index]
 		puts "Random word: #{random_word}"
+		return random_word
 	end
 
+	#https://www.ruby2d.com/learn/window/
 	def handle_input
 		return if @game_over
 	
@@ -71,9 +73,9 @@ class Game
 
 	def update
 		# https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
-		guesses = [] #letters guessed go into this array
+		guesses = [] #letters guessed go into this array(starts as underscores)
 		guesses = @word.chars.map { |c| guesses.include?(c) ? c : '_' }.join(' ')
-		puts guesses
+		puts guesses 
   end
 
 	def update_snowman
