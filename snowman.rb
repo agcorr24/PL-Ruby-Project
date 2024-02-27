@@ -1,6 +1,10 @@
 require 'ruby2d'
 require 'set'
 
+if RUBY_PLATFORM =~ /mingw/
+  RubyInstaller::Runtime.add_dll_directory(File.expand_path('~/../../usr/local/bin'))
+end
+
 #https://www.ruby2d.com/learn/window/
 set title: "Snowman Word Game", background: 'blue', resizable: true
 
