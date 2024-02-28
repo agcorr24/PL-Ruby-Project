@@ -93,7 +93,7 @@ class Game
 		@snowman << Line.new(x1: 300, y1: 280, x2: 340, y2: 240, width: 5, color: 'white')
 	  when 0
 		@snowman << Line.new(x1: 290, y1: 200, x2: 310, y2: 200, width: 5, color: 'white')
-		@game_over = true
+		@game_over = true  # Set @game_over to true when the snowman is fully drawn
     end
 	@snowman.each(&:add) # add elements to window
 	# Add each snowman element to the window
@@ -110,11 +110,15 @@ end
     elsif @guess_limit.zero?
       puts 'You lose!'
       @game_over = true
+	  close_window
     end
   end
 end
 
-#testing
+	def close_window
+		close
+	end
+
 
 # Create game instance
 game = Game.new
