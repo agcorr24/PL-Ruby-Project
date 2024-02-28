@@ -115,6 +115,7 @@ end
 	def check_game_over
     if @word.chars.all? { |c| @guesses.include?(c) }
       puts 'You win!'
+	  puts "The correct word was: #{correct_word}"  # Display correct word
       @game_over = true
 	  Window.close
     elsif @guess_limit.zero?
