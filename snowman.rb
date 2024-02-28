@@ -53,26 +53,21 @@ class Game
 		guessed_word = @word.chars.map { |c| @guesses.include?(c) ? c : '_' }.join(' ')
 		@word_text.text = guessed_word
 	  end
+
 	  
 	#https://www.ruby2d.com/learn/window/
-	def handle_input(event)
-		#editing_guess #showing current state of the word
-
-		puts "Enter a letter"
-		letter = gets.chomp.downcase
-		#if letter == /[a-z]/
-		if letter.match?(/[a-z]/) && letter.length == 1 #check if input single letter
-			if @word.include?(letter)
-				@guesses.add(letter)
-				update_snowman
-			else
-				@guess_limit -= 1
-				update_snowman
-			end
-			update_displayed_word
-			check_game_over
+	def handle_input(letter)
+		if letter.match?(/[a-z]/) && letter.length == 1 #check if input is a single letter
+		  if @word.include?(letter)
+			@guesses.add(letter)
+		  else
+			@guess_limit -= 1
+			update_snowman
+		  end
+		  update_displayed_word
+		  check_game_over
 		end
-	end
+	  end
 
 	def editing_guess
 		# https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
@@ -88,29 +83,25 @@ class Game
     case @guess_limit
     when 5
 		@snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
-		show
 	  when 4
 		@snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
-		show
 	  when 3
 		@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
-		show
 	  when 2
 		@snowman << Line.new(x1: 300, y1: 280, x2: 260, y2: 240, width: 5, color: 'white')
-		show
 	  when 1
 		@snowman << Line.new(x1: 300, y1: 280, x2: 340, y2: 240, width: 5, color: 'white')
-		show
 	  when 0
 		@snowman << Line.new(x1: 290, y1: 200, x2: 310, y2: 200, width: 5, color: 'white')
-		show
 		@game_over = true
     end
 	@snowman.each(&:add) # add elements to window
 	# Add each snowman element to the window
 	#@snowman.each do |element|
-		#element.add
-  end
+	#	element.add	 
+  # end
+end
+
 
 	def check_game_over
     if @word.chars.all? { |c| @guesses.include?(c) }
@@ -125,8 +116,17 @@ end
 
 #testing
 
-
+# Create game instance
 game = Game.new
-game.update_snowman #draw
-show #show window
 
+on :key_down do |event|
+	if event.key.match?(/[a-z]/) # Check if the key pressed is a letter
+	  game.handle_input(event.key.downcase) # Pass the pressed letter to the handle_input method
+	end
+  end
+  
+  # Add snowman elements
+  game.update_snowman
+  
+  # Show window
+  show
