@@ -63,8 +63,14 @@ class Game
 		@word
 	  end
 
+	  # to count guesses
+	  def guesses_left
+		@guess_limit - @incorrect_guesses.length
+	  end
+
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
+		puts "Guesses left: #{guesses_left}"
 		if letter.match?(/[a-z]/) && letter.length == 1 #check if input is a single letter
 		  if @word.include?(letter)
 			@guesses.add(letter)
@@ -105,9 +111,9 @@ class Game
 		@game_over = true  # Set @game_over to true when the snowman is fully drawn
     end
 	@snowman.each(&:add) # add elements to window
-	# Add each snowman element to the window
-	#@snowman.each do |element|
-	#	element.add	 
+	update_displayed_word
+    puts "Guesses left: #{guesses_left}"
+
   # end
 end
 
@@ -124,6 +130,7 @@ end
       @game_over = true
 	  Window.close
     end
+	#puts "Guesses left: #{guesses_left}"
   end
 end
 
