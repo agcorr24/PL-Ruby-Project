@@ -6,11 +6,11 @@ set title: "Snowman Word Game", background: 'blue', resizable: true
 
 # https://www.rubyguides.com/ruby-tutorial/object-oriented-programming/
 class Game
-
 	def initialize
 		#initialize all variables
     @word = read_file('dictionary.txt')
     @out_of_guesses = false
+		@guesses = Set.new
 		@guess_limit = 6
 		@game_over = false
 		@snowman = []
@@ -18,12 +18,11 @@ class Game
   end
 
 	def start_game
-		#initial message
 		Text.new("Welcome to the Snowman Word Game!", x: 50, y: 60, size: 20, color: 'white')
 		Text.new("Enter a letter please.", x: 50, y: 80, size: 20, color: 'white')
-		puts "Starting game"
+		@word_text = Text.new("", x: 50, y: 100, size: 20, color: 'white')
+		update_displayed_word # Corrected method name
 		@game_started = true
-		#handle_input
 	end
 	
 	def read_file(filename)
@@ -45,22 +44,32 @@ class Game
 		random_index = rand(words_array.length) # pick random word
 		random_word = words_array[random_index]
 		puts "Random word: #{random_word}"
-		return random_word
+		#return random_word
+		random_word
 	end
-	
+
+	#to update display when typing
+	def update_displayed_word
+		guessed_word = @word.chars.map { |c| @guesses.include?(c) ? c : '_' }.join(' ')
+		@word_text.text = guessed_word
+	  end
+	  
 	#https://www.ruby2d.com/learn/window/
-	def handle_input
-		editing_guess #showing current state of the word
+	def handle_input(event)
+		#editing_guess #showing current state of the word
 
 		puts "Enter a letter"
 		letter = gets.chomp.downcase
-		if letter == /[a-z]/
+		#if letter == /[a-z]/
+		if letter.match?(/[a-z]/) && letter.length == 1 #check if input single letter
 			if @word.include?(letter)
 				@guesses.add(letter)
+				update_snowman
 			else
 				@guess_limit -= 1
 				update_snowman
 			end
+			update_displayed_word
 			check_game_over
 		end
 	end
@@ -70,25 +79,37 @@ class Game
 		guesses = [] #letters guessed go into this array(starts as underscores)
 		guesses = @word.chars.map { |c| guesses.include?(c) ? c : '_' }.join(' ')
 		puts guesses 
-		Text.new(guesses)
+		#Text.new(guesses)
+		Text.new(guesses, x: 50, y: 100, size: 20, color: 'white')
   end
 
 	def update_snowman
+	#@snowman.each(&:remove)  # Remove existing snowman elements
     case @guess_limit
     when 5
-      @snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
-    when 4
-      @snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
-    when 3
-      @snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
-    when 2
-      @snowman << Line.new(x1: 300, y1: 280, x2: 260, y2: 240, width: 5, color: 'white')
-    when 1
-      @snowman << Line.new(x1: 300, y1: 280, x2: 340, y2: 240, width: 5, color: 'white')
-    when 0
-      @snowman << Line.new(x1: 290, y1: 200, x2: 310, y2: 200, width: 5, color: 'white')
-      @game_over = true
+		@snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
+		show
+	  when 4
+		@snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
+		show
+	  when 3
+		@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
+		show
+	  when 2
+		@snowman << Line.new(x1: 300, y1: 280, x2: 260, y2: 240, width: 5, color: 'white')
+		show
+	  when 1
+		@snowman << Line.new(x1: 300, y1: 280, x2: 340, y2: 240, width: 5, color: 'white')
+		show
+	  when 0
+		@snowman << Line.new(x1: 290, y1: 200, x2: 310, y2: 200, width: 5, color: 'white')
+		show
+		@game_over = true
     end
+	@snowman.each(&:add) # add elements to window
+	# Add each snowman element to the window
+	#@snowman.each do |element|
+		#element.add
   end
 
 	def check_game_over
@@ -106,7 +127,6 @@ end
 
 
 game = Game.new
-
-
-show
+game.update_snowman #draw
+show #show window
 
