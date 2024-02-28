@@ -107,19 +107,14 @@ end
     if @word.chars.all? { |c| @guesses.include?(c) }
       puts 'You win!'
       @game_over = true
-	  close_window
+	  Window.close
     elsif @guess_limit.zero?
       puts 'You lose!'
       @game_over = true
-	  close_window
+	  Window.close
     end
   end
 end
-
-	def close_window
-		close
-	end
-
 
 # Create game instance
 game = Game.new
