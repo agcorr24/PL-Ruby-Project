@@ -58,7 +58,11 @@ class Game
 		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
 	  end
 
-	  
+	  # for the correct random word
+	  def correct_word
+		@word
+	  end
+
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
 		if letter.match?(/[a-z]/) && letter.length == 1 #check if input is a single letter
@@ -115,6 +119,7 @@ end
 	  Window.close
     elsif @guess_limit.zero?
       puts 'You lose!'
+	  puts "The correct word was: #{correct_word}"  # Display correct word
       @game_over = true
 	  Window.close
     end
