@@ -11,9 +11,11 @@ class Game
     @word = read_file('dictionary.txt')
     @out_of_guesses = false
 		@guesses = Set.new
+		@incorrect_guesses = Set.new  # Initialize incorrect_guesses here
 		@guess_limit = 6
 		@game_over = false
 		@snowman = []
+		@incorrect_letters_text = Text.new("", x: 50, y: 120, size: 20, color: 'red') # Display incorrect letters
 		start_game
   end
 
@@ -52,6 +54,8 @@ class Game
 	def update_displayed_word
 		guessed_word = @word.chars.map { |c| @guesses.include?(c) ? c : '_' }.join(' ')
 		@word_text.text = guessed_word
+		# Update the displayed incorrect letters
+		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
 	  end
 
 	  
@@ -61,6 +65,7 @@ class Game
 		  if @word.include?(letter)
 			@guesses.add(letter)
 		  else
+			@incorrect_guesses.add(letter)  # Add incorrect letter
 			@guess_limit -= 1
 			update_snowman
 		  end
