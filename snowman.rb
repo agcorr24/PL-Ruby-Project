@@ -107,6 +107,7 @@ end
     if @word.chars.all? { |c| @guesses.include?(c) }
       puts 'You win!'
       @game_over = true
+	  close_window
     elsif @guess_limit.zero?
       puts 'You lose!'
       @game_over = true
