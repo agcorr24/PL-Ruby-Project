@@ -52,14 +52,16 @@ class Game
 
 	#to update display when typing
 	def update_displayed_word
+
 		guessed_word = @word.chars.map { |c| @guesses.include?(c) ? c : '_' }.join(' ')
 		@word_text.text = guessed_word
+
 		# Update the displayed incorrect letters
 		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
 		if @guesses_left_text.nil?
-    @guesses_left_text = Text.new("", x: 50, y: 140, size: 20, color: 'white')
-  	end
-  	@guesses_left_text.text = "Guesses left: #{guesses_left}"
+     @guesses_left_text = Text.new("", x: 50, y: 140, size: 20, color: 'white')
+  	 end
+  	 @guesses_left_text.text = "Guesses left: #{guesses_left}"
 	  end
 
 	# for the correct random word
@@ -77,7 +79,7 @@ class Game
 		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
 			letter.downcase! # Convert the letter to lowercase
 
-			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
+		unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
 		  if @word.include?(letter)
 			@guesses.add(letter)
 		  else
@@ -141,12 +143,16 @@ end
 # Create game instance
 game = Game.new
 
-on :key_down do |event|
-	if event.key.match?(/[a-zA-Z'-']/) # Check if the key pressed is a letter or special character
-		game.handle_input(event.key.downcase) # Pass the pressed letter to the handle_input method
+# Define the event handler
+ on :key_down do |event|
+	letter = event.key # Get the pressed key
+
+	if letter.match?(/[a-zA-Z'-]/) && letter.length == 1 # Check if the key pressed is a letter or special character
+	  letter.downcase! if letter.match?(/[A-Z]/) # Convert uppercase letters to lowercase
+	  game.handle_input(letter) # Pass the pressed letter to the handle_input method
 	end
   end
-  
+
   # Add snowman elements
   game.update_snowman
   
