@@ -110,9 +110,9 @@ class Game
 		when 3
 			@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
 		when 2
-			@snowman << Line.new(x1: 300, y1: 300, x2: 240, y2: 260, width: 5, color: 'white')
+			@snowman << Line.new(x1: 300, y1: 300, x2: 200, y2: 280, width: 5, color: 'white')
 		when 1
-			@snowman << Line.new(x1: 300, y1: 300, x2: 360, y2: 260, width: 5, color: 'white')
+			@snowman << Line.new(x1: 300, y1: 300, x2: 400, y2: 280, width: 5, color: 'white')
 		when 0
 			@game_over = true  # Set @game_over to true when the snowman is fully drawn
 		end
