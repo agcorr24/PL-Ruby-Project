@@ -58,15 +58,15 @@ class Game
 		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
 	  end
 
-	  # for the correct random word
-	  def correct_word
-		@word
-	  end
+	# for the correct random word
+	def correct_word
+	@word
+	end
 
-	  # to count guesses
-	  def guesses_left
-		@guess_limit - @incorrect_guesses.length
-	  end
+	# to count guesses
+	def guesses_left
+	@guess_limit - (@guesses - @word.chars.to_set).length
+	end
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
@@ -103,16 +103,15 @@ class Game
 	  when 3
 		@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
 	  when 2
-		@snowman << Line.new(x1: 300, y1: 280, x2: 260, y2: 240, width: 5, color: 'white')
+		@snowman << Line.new(x1: 300, y1: 300, x2: 240, y2: 260, width: 5, color: 'white')
 	  when 1
-		@snowman << Line.new(x1: 300, y1: 280, x2: 340, y2: 240, width: 5, color: 'white')
+		@snowman << Line.new(x1: 300, y1: 300, x2: 360, y2: 260, width: 5, color: 'white')
 	  when 0
-		@snowman << Line.new(x1: 290, y1: 200, x2: 310, y2: 200, width: 5, color: 'white')
 		@game_over = true  # Set @game_over to true when the snowman is fully drawn
     end
-	@snowman.each(&:add) # add elements to window
-	update_displayed_word
-    puts "Guesses left: #{guesses_left}"
+		@snowman.each(&:add) # add elements to window
+		update_displayed_word
+		Text.new("Guesses left: #{guesses_left}")
 
   # end
 end
