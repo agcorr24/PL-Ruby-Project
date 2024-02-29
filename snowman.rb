@@ -15,7 +15,7 @@ class Game
 		@guess_limit = 6
 		@game_over = false
 		@snowman = []
-		@incorrect_letters_text = Text.new("", x: 50, y: 120, size: 20, color: 'red') # Display incorrect letters
+		@incorrect_letters_text = Text.new("", x: 50, y: 30, size: 20, color: 'red') # Display incorrect letters
 		start_game
   end
 
@@ -34,7 +34,7 @@ class Game
 		# Read the text file and store each word in a hash table
 		words_hash = {}
 
-		File.open('dictionary.txt', 'r') do |file|
+		File.open(filename, 'r') do |file|
 			file.each_line do |line|
 				words = line.chomp.split(' ') # separated by spaces
 				words.each do |word| # add to hashtable
@@ -61,7 +61,7 @@ class Game
 		# Update the displayed incorrect letters
 		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
 		if @guesses_left_text.nil?
-			@guesses_left_text = Text.new("", x: 50, y: 140, size: 20, color: 'white')
+			@guesses_left_text = Text.new("", x: 50, y: 130, size: 20, color: 'white')
 		end
 		@guesses_left_text.text = "Guesses left: #{guesses_left}"
 	end
