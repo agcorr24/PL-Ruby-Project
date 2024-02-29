@@ -8,7 +8,7 @@ set title: "Snowman Word Game", background: 'blue', resizable: true
 class Game
 	def initialize
 		#initialize all variables
-    @word = read_file('dictionary.txt')
+    @word = read_file('test.txt')
     @out_of_guesses = false
 		@guesses = Set.new
 		@incorrect_guesses = Set.new  # Initialize incorrect_guesses here
@@ -75,8 +75,7 @@ class Game
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
 		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
-			letter.downcase! # Convert the letter to lowercase
-
+			letter.downcase # Convert the letter to lowercase
 			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
 		  if @word.include?(letter)
 			@guesses.add(letter)
