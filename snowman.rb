@@ -38,7 +38,8 @@ class Game
 			file.each_line do |line|
 				words = line.chomp.split(' ') # separated by spaces
 				words.each do |word| # add to hashtable
-					words_hash[word] = true
+					#words_hash[word] = true
+					words_hash[word.downcase] = true  # Convert word to lowercase before adding to hash
 				end
 			end
 		end
