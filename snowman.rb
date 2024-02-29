@@ -74,7 +74,7 @@ class Game
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
-		if letter.match?(/[a-zA-Z'-']/) && letter.length == 1
+		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
 			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
 		  if @word.include?(letter)
 			@guesses.add(letter)
