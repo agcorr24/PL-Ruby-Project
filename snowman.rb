@@ -56,6 +56,10 @@ class Game
 		@word_text.text = guessed_word
 		# Update the displayed incorrect letters
 		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
+		if @guesses_left_text.nil?
+    @guesses_left_text = Text.new("", x: 50, y: 140, size: 20, color: 'white')
+  	end
+  	@guesses_left_text.text = "Guesses left: #{guesses_left}"
 	  end
 
 	# for the correct random word
@@ -111,7 +115,6 @@ class Game
     end
 		@snowman.each(&:add) # add elements to window
 		update_displayed_word
-		Text.new("Guesses left: #{guesses_left}")
 
   # end
 end
