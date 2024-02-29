@@ -8,8 +8,8 @@ set title: "Snowman Word Game", background: 'blue', resizable: true
 class Game
 	def initialize
 		#initialize all variables
-    @word = read_file('dictionary.txt')
-    @out_of_guesses = false
+		@word = read_file('dictionary.txt')
+		@out_of_guesses = false
 		@guesses = Set.new
 		@incorrect_guesses = Set.new  # Initialize incorrect_guesses here
 		@guess_limit = 6
@@ -33,6 +33,7 @@ class Game
 		# https://www.educative.io/answers/what-is-the-chomp-method-in-ruby
 		# Read the text file and store each word in a hash table
 		words_hash = {}
+
 		File.open('dictionary.txt', 'r') do |file|
 			file.each_line do |line|
 				words = line.chomp.split(' ') # separated by spaces
@@ -41,6 +42,7 @@ class Game
 				end
 			end
 		end
+
 		# Convert the keys of the hash table to an array
 		words_array = words_hash.keys
 		random_index = rand(words_array.length) # pick random word
@@ -52,45 +54,42 @@ class Game
 
 	#to update display when typing
 	def update_displayed_word
-
 		guessed_word = @word.chars.map { |c| @guesses.include?(c) ? c : '_' }.join(' ')
 		@word_text.text = guessed_word
 
 		# Update the displayed incorrect letters
 		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
 		if @guesses_left_text.nil?
-     @guesses_left_text = Text.new("", x: 50, y: 140, size: 20, color: 'white')
-  	 end
-  	 @guesses_left_text.text = "Guesses left: #{guesses_left}"
-	  end
+			@guesses_left_text = Text.new("", x: 50, y: 140, size: 20, color: 'white')
+		end
+		@guesses_left_text.text = "Guesses left: #{guesses_left}"
+	end
 
 	# for the correct random word
 	def correct_word
-	@word
+		@word
 	end
 
 	# to count guesses
 	def guesses_left
-	@guess_limit - (@guesses - @word.chars.to_set).length
+		@guess_limit - (@guesses - @word.chars.to_set).length
 	end
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
 		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
-			letter.downcase! # Convert the letter to lowercase
-
-		unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
-		  if @word.include?(letter)
-			@guesses.add(letter)
-		  else
-			@incorrect_guesses.add(letter)  # Add incorrect letter
-			@guess_limit -= 1
-			update_snowman
-		  end
-		  update_displayed_word
-		  check_game_over
+			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
+				if @word.include?(letter)
+					@guesses.add(letter)
+				else
+					@incorrect_guesses.add(letter)  # Add incorrect letter
+					@guess_limit -= 1
+					update_snowman
+				end
+				update_displayed_word
+				check_game_over
+			end
 		end
-	  end
 	end
 
 	def editing_guess
@@ -98,63 +97,60 @@ class Game
 		guesses = [] #letters guessed go into this array(starts as underscores)
 		guesses = @word.chars.map { |c| guesses.include?(c) ? c : '_' }.join(' ')
 		puts guesses 
-		#Text.new(guesses)
 		Text.new(guesses, x: 50, y: 100, size: 20, color: 'white')
-  end
+	end
 
 	def update_snowman
-	#@snowman.each(&:remove)  # Remove existing snowman elements
-    case @guess_limit
-    when 5
-		@snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
-	  when 4
-		@snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
-	  when 3
-		@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
-	  when 2
-		@snowman << Line.new(x1: 300, y1: 300, x2: 240, y2: 260, width: 5, color: 'white')
-	  when 1
-		@snowman << Line.new(x1: 300, y1: 300, x2: 360, y2: 260, width: 5, color: 'white')
-	  when 0
-		@game_over = true  # Set @game_over to true when the snowman is fully drawn
-    end
+		#@snowman.each(&:remove)  # Remove existing snowman elements
+		case @guess_limit
+		when 5
+			@snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
+		when 4
+			@snowman << Circle.new(x: 300, y: 320, radius: 60, sectors: 32, color: 'white')
+		when 3
+			@snowman << Circle.new(x: 300, y: 220, radius: 40, sectors: 32, color: 'white')
+		when 2
+			@snowman << Line.new(x1: 300, y1: 300, x2: 240, y2: 260, width: 5, color: 'white')
+		when 1
+			@snowman << Line.new(x1: 300, y1: 300, x2: 360, y2: 260, width: 5, color: 'white')
+		when 0
+			@game_over = true  # Set @game_over to true when the snowman is fully drawn
+		end
 		@snowman.each(&:add) # add elements to window
 		update_displayed_word
-
-  # end
-end
-
+	end
 
 	def check_game_over
-    if @word.chars.all? { |c| @guesses.include?(c) }
+		if @word.chars.all? { |c| @guesses.include?(c) }
 			Window.clear
-      Text.new('You win!', x: 50, y: 200, z:1, size: 50)
-	  	Text.new("The correct word was: #{correct_word}")  # Display correct word
-      @game_over = true
-    elsif @guess_limit.zero?
+			Text.new('You win!', x: 50, y: 200, z:1, size: 50)
+			Text.new("The correct word was: #{correct_word}")  # Display correct word
+			@game_over = true
+		elsif @guess_limit.zero?
 			Window.clear
-      Text.new('You lose!', x: 50, y: 200, z:1, size: 50)
-	  	Text.new("The correct word was: #{correct_word}")  # Display correct word
-      @game_over = true
-    end
-  end
+			Text.new('You lose!', x: 50, y: 200, z:1, size: 50)
+			Text.new("The correct word was: #{correct_word}")  # Display correct word
+			@game_over = true
+		end
+	end
 end
 
-# Create game instance
-game = Game.new
+	# Create game instance
+	game = Game.new
 
-# Define the event handler
- on :key_down do |event|
-	letter = event.key # Get the pressed key
+	# Define the event handler
+	on :key_down do |event|
+		key = event.key
+	  
+		if key.match?(/[a-zA-Z'-]/) && key.length == 1
+		  shift_pressed = event.key == 'left shift' || event.key == 'right shift'
+		  letter = shift_pressed ? key.upcase : key.downcase
+		  game.handle_input(letter)
+		end
+	  end
 
-	if letter.match?(/[a-zA-Z'-]/) && letter.length == 1 # Check if the key pressed is a letter or special character
-	  letter.downcase! if letter.match?(/[A-Z]/) # Convert uppercase letters to lowercase
-	  game.handle_input(letter) # Pass the pressed letter to the handle_input method
-	end
-  end
-
-  # Add snowman elements
-  game.update_snowman
-  
-  # Show window
-  show
+	# Add snowman elements
+	game.update_snowman
+	
+	# Show window
+	show
