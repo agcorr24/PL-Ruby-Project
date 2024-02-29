@@ -8,7 +8,7 @@ set title: "Snowman Word Game", background: 'blue', resizable: true
 class Game
 	def initialize
 		#initialize all variables
-    @word = read_file('test.txt')
+    @word = read_file('dictionary.txt')
     @out_of_guesses = false
 		@guesses = Set.new
 		@incorrect_guesses = Set.new  # Initialize incorrect_guesses here
@@ -33,7 +33,7 @@ class Game
 		# https://www.educative.io/answers/what-is-the-chomp-method-in-ruby
 		# Read the text file and store each word in a hash table
 		words_hash = {}
-		File.open('test.txt', 'r') do |file|
+		File.open('dictionary.txt', 'r') do |file|
 			file.each_line do |line|
 				words = line.chomp.split(' ') # separated by spaces
 				words.each do |word| # add to hashtable
