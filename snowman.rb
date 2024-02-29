@@ -74,7 +74,6 @@ class Game
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
-		puts "Guesses left: #{guesses_left}"
 		if letter.match?(/[a-z]/) && letter.length == 1 #check if input is a single letter
 		  if @word.include?(letter)
 			@guesses.add(letter)
