@@ -113,6 +113,8 @@ class Game
 			@snowman << Line.new(x1: 300, y1: 300, x2: 200, y2: 280, width: 5, color: 'white')
 		when 1
 			@snowman << Line.new(x1: 300, y1: 300, x2: 400, y2: 280, width: 5, color: 'white')
+			@snowman << Rectangle.new(x: 250, y: 220 - 40 - 10, width: 100, height: 10, color: 'black') # Create the brim of the hat
+  			@snowman << Rectangle.new(x: 270, y: 220 - 40 - 10 - 50, width: 60, height: 50, color: 'black')
 		when 0
 			@game_over = true  # Set @game_over to true when the snowman is fully drawn
 		end
