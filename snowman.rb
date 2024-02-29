@@ -74,7 +74,7 @@ class Game
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
-  		if letter.match?(/[A-Za-z'-]/i) && letter.length == 1 # Check if input is a single letter or a special character including '   
+		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
 			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
 		  if @word.include?(letter)
 			@guesses.add(letter)
@@ -140,8 +140,8 @@ end
 game = Game.new
 
 on :key_down do |event|
-	if event.key.match?(/[a-z]/) # Check if the key pressed is a letter
-	  game.handle_input(event.key.downcase) # Pass the pressed letter to the handle_input method
+	if event.key.match?(/[a-zA-Z-']/) # Check if the key pressed is a letter or special character
+		game.handle_input(event.key.downcase) # Pass the pressed letter to the handle_input method
 	end
   end
   
