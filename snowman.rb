@@ -74,7 +74,8 @@ class Game
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
-		if letter.match?(/[a-z]/) && letter.length == 1 #check if input is a single letter
+		if letter.match?(/[a-z'-]/i) && letter.length == 1 # Check if input is a single letter or a special character
+			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
 		  if @word.include?(letter)
 			@guesses.add(letter)
 		  else
@@ -86,6 +87,7 @@ class Game
 		  check_game_over
 		end
 	  end
+	end
 
 	def editing_guess
 		# https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
