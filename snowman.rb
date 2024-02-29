@@ -123,17 +123,16 @@ end
 
 	def check_game_over
     if @word.chars.all? { |c| @guesses.include?(c) }
-      puts 'You win!'
-	  puts "The correct word was: #{correct_word}"  # Display correct word
+			Window.clear
+      Text.new('You win!', x: 50, y: 200, z:1, size: 50)
+	  	Text.new("The correct word was: #{correct_word}")  # Display correct word
       @game_over = true
-	  Window.close
     elsif @guess_limit.zero?
-      puts 'You lose!'
-	  puts "The correct word was: #{correct_word}"  # Display correct word
+			Window.clear
+      Text.new('You lose!', x: 50, y: 200, z:1, size: 50)
+	  	Text.new("The correct word was: #{correct_word}")  # Display correct word
       @game_over = true
-	  Window.close
     end
-	#puts "Guesses left: #{guesses_left}"
   end
 end
 
