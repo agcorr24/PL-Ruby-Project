@@ -33,7 +33,7 @@ class Game
 		# https://www.educative.io/answers/what-is-the-chomp-method-in-ruby
 		# Read the text file and store each word in a hash table
 		words_hash = {}
-		File.open('dictionary.txt', 'r') do |file|
+		File.open('test.txt', 'r') do |file|
 			file.each_line do |line|
 				words = line.chomp.split(' ') # separated by spaces
 				words.each do |word| # add to hashtable
