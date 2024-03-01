@@ -1,5 +1,5 @@
 # TODO - message for numbers/etc and message if already guessed
-# TODO - sorted order for numbers already guessed
+# TODO - sorted order for numbers already guessed ****
 
 require 'ruby2d'
 require 'set'
