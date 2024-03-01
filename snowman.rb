@@ -80,20 +80,36 @@ class Game
 
 	#https://www.ruby2d.com/learn/window/
 	def handle_input(letter)
-		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
-			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
-				if @word.include?(letter)
-					@guesses.add(letter)
-				else
-					@incorrect_guesses.add(letter)  # Add incorrect letter
-					@guess_limit -= 1
-					update_snowman
-				end
-				update_displayed_word
-				check_game_over
-			end
-		end
-	end
+  if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
+    unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
+      if @word.include?(letter)
+        @guesses.add(letter)
+      else
+        @incorrect_guesses.add(letter)  # Add incorrect letter
+        @guess_limit -= 1
+        update_snowman
+      end
+      update_displayed_word
+      check_game_over
+    else
+      if @guesses.include?(letter)
+        display_message("You already guessed '#{letter}'.", 50, 150)
+      else
+        display_message("Invalid guess: '#{letter}'. Please enter a letter.", 50, 150)
+      end
+    end
+  else
+    display_message("Invalid input: '#{letter}'. Please enter a letter.", 50, 150)
+  end
+end
+
+def display_message(message, x, y)
+  # Remove existing message
+  @message_text&.remove
+
+  # Display new message
+  @message_text = Text.new(message, x: x, y: y, size: 20, color: 'white')
+end
 
 	def editing_guess
 		# https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
