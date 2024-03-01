@@ -1,5 +1,4 @@
 # TODO - message for numbers/etc and message if already guessed
-# TODO - sorted order for numbers already guessed ****
 
 require 'ruby2d'
 require 'set'
@@ -62,7 +61,7 @@ class Game
 		@word_text.text = guessed_word
 
 		# Update the displayed incorrect letters
-		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.join(', ')}"
+		@incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.sort.join(', ')}"
 		if @guesses_left_text.nil?
 			@guesses_left_text = Text.new("", x: 50, y: 130, size: 20, color: 'white')
 		end
