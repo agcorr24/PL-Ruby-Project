@@ -1,4 +1,3 @@
-# TODO - message for numbers/etc and message if already guessed
 
 require 'ruby2d'
 require 'set'
@@ -111,6 +110,7 @@ class Game
 
 		# Display new message
 		@message_text = Text.new(message, x: x, y: y, size: 20, color: 'white')
+		 
 	end
 
     def editing_guess
@@ -164,14 +164,15 @@ end
     # Define the event handler
     on :key_down do |event|
         key = event.key
-      
-        if key.match?(/[a-zA-Z'-]/) && key.length == 1
-          shift_pressed = event.key == 'left shift' || event.key == 'right shift'
-          letter = shift_pressed ? key.upcase : key.downcase
-          game.handle_input(letter)
+    
+        if key.match?(/[0-9]/) # Check if the input is a number
+            game.display_message("Numbers are not allowed. Please enter a letter.", 50, 30)
+        elsif key.match?(/[a-zA-Z'-]/) && key.length == 1
+            shift_pressed = event.key == 'left shift' || event.key == 'right shift'
+            letter = shift_pressed ? key.upcase : key.downcase
+            game.handle_input(letter)
         end
-      end
-
+    end
     # Add snowman elements
     game.update_snowman
     
