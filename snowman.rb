@@ -1,3 +1,7 @@
+# TODO :: intiial comments to introduce code behavior/etc/etc, double check for bugs, fine-tuning, etc.
+
+
+# Class definition(s) for a Ruby Snowman Word-Guessing game  **** FINISH THIS *********************************
 
 require 'ruby2d'
 require 'set'
