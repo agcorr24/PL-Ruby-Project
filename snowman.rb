@@ -8,26 +8,28 @@ set title: "Snowman Word Game", background: 'blue', resizable: true
 # https://www.rubyguides.com/ruby-tutorial/object-oriented-programming/
 class Game
     def initialize
-        #initialize all variables
+        #initialize variables
         @word = read_file('dictionary.txt')
         @out_of_guesses = false
         @guesses = Set.new
-        @incorrect_guesses = Set.new  # Initialize incorrect_guesses here
+        @incorrect_guesses = Set.new  # Initialize incorrect_guesses 
         @guess_limit = 6
         @game_over = false
         @snowman = []
-        @incorrect_letters_text = Text.new("", x: 50, y: 10, size: 20, color: 'red') # Display incorrect letters
+        @incorrect_letters_text = Text.new("", x: 50, y: 10, size: 20, color: 'red') # Incorrect letters
         start_game
-  end
+    end # End initialize
 
+    # Initial game display
     def start_game
         Text.new("Welcome to the Snowman Word Game!", x: 50, y: 60, size: 20, color: 'white')
         Text.new("Enter a letter please.", x: 50, y: 80, size: 20, color: 'white')
         @word_text = Text.new("", x: 50, y: 100, size: 20, color: 'white')
-        update_displayed_word # Corrected method name
+        update_displayed_word # Update method 
         @game_started = true
-    end
+    end # End start_game
     
+    # Read in word file
     def read_file(filename)
         # https://stackoverflow.com/questions/36140990/break-text-file-into-separate-words-and-store-in-array-in-ruby
         # https://www.ruby-forum.com/t/file-contents-into-hash-table/193963/6
@@ -45,44 +47,44 @@ class Game
             end
         end
 
-        # Convert the keys of the hash table to an array
+        # Convert  keys of the hash table to array
         words_array = words_hash.keys
-        random_index = rand(words_array.length) # pick random word
+        random_index = rand(words_array.length) # Pick random word
         random_word = words_array[random_index]
         puts "Random word: #{random_word}"
-        #return random_word
         random_word
-    end
+    end # End read_file
 
-    #to update display when typing
+    # Update display when typing
     def update_displayed_word
         guessed_word = @word.chars.map { |c| @guesses.include?(c) ? c : '_' }.join(' ')
         @word_text.text = guessed_word
 
-        # Update the displayed incorrect letters
+        # Update display - incorrect letters
         @incorrect_letters_text.text = "Incorrect letters: #{@incorrect_guesses.to_a.sort.join(', ')}"
         if @guesses_left_text.nil?
             @guesses_left_text = Text.new("", x: 50, y: 130, size: 20, color: 'white')
         end
         @guesses_left_text.text = "Guesses left: #{guesses_left}"
-    end
+    end # End update_displayed_word
 
-    # for the correct random word
+    # For correct random word
     def correct_word
         @word
-    end
+    end # End correct_word
 
-    # to count guesses
+    # To count guesses
     def guesses_left
         @guess_limit - (@guesses - @word.chars.to_set).length
-    end
+    end # End guesses_left
 
+    # To determine event behavior 
     #https://www.ruby2d.com/learn/window/
     def handle_input(letter)
-		return if @game_over # Return early if the game is already over
+		return if @game_over # Return early if game is already over
 
   		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
-			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if the letter has not been guessed before
+			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if letter has not already been guessed 
 				if @word.include?(letter)
 					@guesses.add(letter)
 				else
@@ -98,31 +100,31 @@ class Game
 				else
 					display_message("Invalid guess: '#{letter}'. Please enter a letter.", 50, 30)
 				end
-				end
+			end
 		else
 			display_message("Invalid input: '#{letter}'. Please enter a letter.", 50, 30)
 		end
-	end
+	end # End handle_input
 
 	def display_message(message, x, y)
 		# Remove existing message
 		@message_text&.remove
 
 		# Display new message
-		@message_text = Text.new(message, x: x, y: y, size: 20, color: 'white')
-		 
-	end
+		@message_text = Text.new(message, x: x, y: y, size: 20, color: 'white') 
+	end # End display_message
 
+    # Change guess display for letter inputs
     def editing_guess
         # https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
-        guesses = [] #letters guessed go into this array(starts as underscores)
+        guesses = [] # Array of letters guessed - starts as underscores
         guesses = @word.chars.map { |c| guesses.include?(c) ? c : '_' }.join(' ')
         puts guesses 
         Text.new(guesses, x: 50, y: 100, size: 20, color: 'white')
-    end
+    end # End editing_guess
 
+    # Snowman visual - updates based on guesses
     def update_snowman
-        #@snowman.each(&:remove)  # Remove existing snowman elements
         case @guess_limit
         when 5
             @snowman << Circle.new(x: 300, y: 450, radius: 80, sectors: 32, color: 'white')
@@ -137,12 +139,13 @@ class Game
             @snowman << Rectangle.new(x: 250, y: 220 - 40 - 10, width: 100, height: 10, color: 'black') # Create the brim of the hat
             @snowman << Rectangle.new(x: 270, y: 220 - 40 - 10 - 50, width: 60, height: 50, color: 'black')
         when 0
-            @game_over = true  # Set @game_over to true when the snowman is fully drawn
+            @game_over = true  # Set @game_over to true when snowman is fully drawn
         end
-        @snowman.each(&:add) # add elements to window
+        @snowman.each(&:add) # Add elements to window
         update_displayed_word
-    end
+    end # End update_snowman
 
+    # Display correct word at end of game (win or lose)
     def check_game_over
         if @word.chars.all? { |c| @guesses.include?(c) }
             Window.clear
@@ -155,26 +158,28 @@ class Game
             Text.new("The correct word was: #{correct_word}")  # Display correct word
             @game_over = true
         end
-	end
-end
+	end # End check_game_over
 
-    # Create game instance
-    game = Game.new
+end # End class game
 
-    # Define the event handler
-    on :key_down do |event|
-        key = event.key
+# Create game instance
+game = Game.new
+
+# Define event handler
+on :key_down do |event|
+    key = event.key
     
-        if key.match?(/[0-9!@#$%^&*()]/) # Check if the input is a number
-            game.display_message("Numbers and Symbols are not allowed. Please enter a letter.", 50, 30)
-        elsif key.match?(/[a-zA-Z'-]/) && key.length == 1
-            shift_pressed = event.key == 'left shift' || event.key == 'right shift'
-            letter = shift_pressed ? key.upcase : key.downcase
-            game.handle_input(letter)
-        end
+    if key.match?(/[0-9!@#$%^&*()]/) # Check if the input is a number
+        game.display_message("Numbers and Symbols are not allowed. Please enter a letter.", 50, 30)
+    elsif key.match?(/[a-zA-Z'-]/) && key.length == 1
+        shift_pressed = event.key == 'left shift' || event.key == 'right shift'
+        letter = shift_pressed ? key.upcase : key.downcase
+        game.handle_input(letter)
     end
-    # Add snowman elements
-    game.update_snowman
+end # End event handler definition
+
+# Add snowman elements
+game.update_snowman
     
-    # Show window
-    show
+# Show window
+show
