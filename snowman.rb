@@ -165,8 +165,8 @@ end
     on :key_down do |event|
         key = event.key
     
-        if key.match?(/[0-9]/) # Check if the input is a number
-            game.display_message("Numbers are not allowed. Please enter a letter.", 50, 30)
+        if key.match?(/[0-9!@#$%^&*()]/) # Check if the input is a number
+            game.display_message("Numbers and Symbols are not allowed. Please enter a letter.", 50, 30)
         elsif key.match?(/[a-zA-Z'-]/) && key.length == 1
             shift_pressed = event.key == 'left shift' || event.key == 'right shift'
             letter = shift_pressed ? key.upcase : key.downcase
