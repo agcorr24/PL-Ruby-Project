@@ -84,31 +84,31 @@ class Game
 
     # To determine event behavior 
     #https://www.ruby2d.com/learn/window/
-    def handle_input(letter)
+		def handle_input(letter)
 		return if @game_over # Return early if game is already over
 
-  		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
-			unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if letter has not already been guessed 
-				if @word.include?(letter)
-					@guesses.add(letter)
+		if letter.match?(/[a-zA-Z'-]/) && letter.length == 1
+				unless @guesses.include?(letter) || @incorrect_guesses.include?(letter) # Check if letter has not already been guessed 
+					if @word.include?(letter)
+							@guesses.add(letter)
+						else
+							@incorrect_guesses.add(letter)  # Add incorrect letter
+							@guess_limit -= 1
+							update_snowman
+						end
+						update_displayed_word
+						check_game_over
 				else
-					@incorrect_guesses.add(letter)  # Add incorrect letter
-					@guess_limit -= 1
-					update_snowman
+					if @guesses.include?(letter)
+							display_message("You already guessed '#{letter}'.", 50, 30)
+					else
+							display_message("You already guessed '#{letter}' incorrectly.", 50, 30)
+					end
 				end
-				update_displayed_word
-				check_game_over
-			else
-				if @guesses.include?(letter)
-					display_message("You already guessed '#{letter}'.", 50, 30)
-				else
-					display_message("Invalid guess: '#{letter}'. Please enter a letter.", 50, 30)
-				end
-			end
 		else
-			display_message("Invalid input: '#{letter}'. Please enter a letter.", 50, 30)
+				display_message("Invalid input: '#{letter}'. Please enter a letter.", 50, 30)
 		end
-	end # End handle_input
+	end
 
 	def display_message(message, x, y)
 		# Remove existing message
