@@ -1,7 +1,7 @@
 require 'ruby2d'
 
 # Unique features:
-# Dynamic list(doesn't have to be fixed): CARDS
+# Dynamic list(doesn't have to be fixed): CARDS, STATUS
 # list with mixes of types: PLAYER STATUS
 # blocking: https://mixandgo.com/learn/ruby/blocks: PLAYER AND DEALER TURNS
 # regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: RECOGNIZING BLACKJACK
@@ -10,6 +10,17 @@ require 'ruby2d'
 # dynamic array instead of fixed: https://www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications
 
 set title: "Blackjack", background: 'gray', resizable: true
+Image.new("blackjack-table.png", x: 80, y:80, width:450, height: 350, z:1)
+Image.new("blankcard.png", x: 255, y:320, width: 100, height: 150, z:5)
+Image.new("blankcard.png", x: 280, y:20, width: 50, height: 75, z:5)
+song = Music.new('musicloop.mp3') #https://www.ruby2d.com/learn/audio/
+song.loop = true
+song.volume = 50
+#song.play
+shuffle = Sound.new('cardshuffle.wav')
+deal = Sound.new('dealcard.wav')
+play = Sound.new('playcard.mp3')
+shuffle.play
 
 class Game
 	def initialize(player)
@@ -120,7 +131,4 @@ end
 
 
 #show window
-Image.new("blackjack-table.png", x: 80, y:80, width:450, height: 350, z:1)
-Image.new("blankcard.png", x: 255, y:320, width: 100, height: 150, z:5)
-Image.new("blankcard.png", x: 280, y:20, width: 50, height: 75, z:5)
 show
