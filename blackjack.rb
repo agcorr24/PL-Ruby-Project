@@ -1,13 +1,14 @@
 require 'ruby2d'
 
 # Unique features:
-# Dynamic list(doesn't have to be fixed): CARDS, STATUS
+# Dynamic list(doesn't have to be fixed): https://www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications
+		# CARDS, STATUS
 # list with mixes of types: PLAYER STATUS
 # blocking: https://mixandgo.com/learn/ruby/blocks: PLAYER AND DEALER TURNS
 # regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: RECOGNIZING BLACKJACK
-# built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby: CARDS
+# built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby
+		# CARDS
 # duck typing https://www.codingninjas.com/studio/library/type-checking-and-duck-typing-in-ruby
-# dynamic array instead of fixed: https://www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications
 
 set title: "Blackjack", background: 'gray', resizable: true
 Image.new("blackjack-table.png", x: 80, y:80, width:450, height: 350, z:1)
