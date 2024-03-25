@@ -1,11 +1,11 @@
 require 'ruby2d'
 
 # Unique features:
-# Dynamic list: cards list 
-# list with mixes of types: player status
-# blocking: https://mixandgo.com/learn/ruby/blocks: player and dealer turns
-# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: recognizing blackjack
-# built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby
+# Dynamic list(doesn't have to be fixed): CARDS
+# list with mixes of types: PLAYER STATUS
+# blocking: https://mixandgo.com/learn/ruby/blocks: PLAYER AND DEALER TURNS
+# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: RECOGNIZING BLACKJACK
+# built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby: CARDS
 # duck typing https://www.codingninjas.com/studio/library/type-checking-and-duck-typing-in-ruby
 # dynamic array instead of fixed: https://www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications
 
@@ -14,7 +14,6 @@ set title: "Blackjack", background: 'gray', resizable: true
 class Game
 	def initialize(player)
 		@deck = Deck.new
-		@deck.shuffle_deck
 		@player = User.new(player)
 		@dealer = Dealer.new
 	end
@@ -61,22 +60,22 @@ end
 class Deck
 	attr_reader :cards
 	def initialize
-		@cards = [] # dynamic list
+		@cards = {} #hashtable
 		#https://stackoverflow.com/questions/4064062/space-in-the-ruby-array-by-w
 		%w(Hearts Diamonds Clubs Spades).each do |suit|
 			%w(2 3 4 5 6 7 8 9 10 J Q K A).each do |rank|
-				@cards << Card.new(rank, suit)
+				card = Card.new(rank, suit)
+				@cards["#{rank} of #{suit}"] = card
 			end
 		end
 	end
-	#can access by deck = Deck.new and cards = deck.cards, can do cards.length
-	def shuffle_deck
-		# ruby has a shuffle method
-		@cards.shuffle!
-		#shuffled_cards = deck.cards
-	end
+
+	# returning a random card from the hashtable
 	def draw
-		@cards.pop
+		key = @cards.keys.sample
+    card = @cards[key]
+    @cards.delete(key) #remove from deck when drawn
+    card
 	end
 end
 
