@@ -4,7 +4,7 @@ require 'ruby2d'
 # Dynamic list: cards list 
 # list with mixes of types: player status
 # blocking: https://mixandgo.com/learn/ruby/blocks: player and dealer turns
-# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/
+# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: recognizing blackjack
 # built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby
 # duck typing https://www.codingninjas.com/studio/library/type-checking-and-duck-typing-in-ruby
 # dynamic array instead of fixed: https://www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications
@@ -39,6 +39,10 @@ class Game
 		yield if block_given?
 	end
 
+	# regular expression and mapping
+	def check_for_blackjack(player)
+		#
+	end
 end
 
 
@@ -118,5 +122,6 @@ end
 
 #show window
 Image.new("blackjack-table.png", x: 80, y:80, width:450, height: 350, z:1)
-Image.new("blankcard.png", x: 250, y:320, width: 100, height: 150, z:5)
+Image.new("blankcard.png", x: 255, y:320, width: 100, height: 150, z:5)
+Image.new("blankcard.png", x: 280, y:20, width: 50, height: 75, z:5)
 show
