@@ -5,7 +5,7 @@ require 'ruby2d'
 		# CARDS, STATUS
 # list with mixes of types: PLAYER STATUS
 # blocking: https://mixandgo.com/learn/ruby/blocks: PLAYER AND DEALER TURNS
-# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: RECOGNIZING BLACKJACK
+# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: RECOGNIZING BLACKJACK, password to start game, allows to cheat
 # built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby
 		# CARDS
 # duck typing https://www.codingninjas.com/studio/library/type-checking-and-duck-typing-in-ruby
