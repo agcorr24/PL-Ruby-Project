@@ -31,7 +31,7 @@
 
 
 	# Create text objects for displaying card information
-	text_player_card = Text.new("", x: 255, y: 320, size: 20, color: 'white')
+	text_player_card = Text.new("", x: 365, y: 320, size: 20, color: 'white')
 	text_dealer_card = Text.new("", x: 280, y: 20, size: 20, color: 'white')
 
 	# Game class
@@ -42,25 +42,21 @@
 			@dealer = Dealer.new
 			@text_player_card = text_player_card
 			@text_dealer_card = text_dealer_card
-		end
-	
-		public
-		def player_turn(&block)
-			yield if block_given?
-		end
-	
-		def dealer_turn(&block)
-			yield if block_given?
-		end
-	
-		def deal_cards_initially
-			player_card = @deck.draw
-			dealer_card = @deck.draw
+		  end
 		
-			update_card_text(@text_player_card, player_card)
-			update_card_text(@text_dealer_card, dealer_card)
-		end
-	
+		  def deal_cards_initially
+			2.times do
+			  player_card = @deck.draw
+			  dealer_card = @deck.draw
+		
+			  @player.add_card(player_card)
+			  update_card_text(@text_player_card, player_card)
+		
+			  @dealer.add_card(dealer_card)
+			  update_card_text(@text_dealer_card, dealer_card)
+			end
+		  end
+		
 		private
 		def update_card_text(text_object, card)
 			suit_icons = {
@@ -103,28 +99,32 @@
 
 	end
 
+	# Deck class
 	class Deck
 		attr_reader :cards
+	
 		def initialize
-			@cards = {} #hashtable
-			#https://stackoverflow.com/questions/4064062/space-in-the-ruby-array-by-w
-			%w(Hearts Diamonds Clubs Spades).each do |suit|
-				%w(2 3 4 5 6 7 8 9 10 J Q K A).each do |rank|
-					card = Card.new(rank, suit)
-					@cards["#{rank} of #{suit}"] = card
-				end
+		@cards = []
+		# Generate the deck of cards
+		%w(Hearts Diamonds Clubs Spades).each do |suit|
+			%w(2 3 4 5 6 7 8 9 10 J Q K A).each do |rank|
+			card = Card.new(rank, suit)
+			@cards << card
 			end
 		end
-
-		# returning a random card from the hashtable
+		shuffle_cards
+		end
+	
+		def shuffle_cards
+		@cards.shuffle!
+		end
+	
 		def draw
-			key = @cards.keys.sample
-		card = @cards[key]
-		@cards.delete(key) #remove from deck when drawn
-		card
+		@cards.pop
 		end
 	end
-
+	
+	# User class
 	class User
 		attr_reader :player_hand, :name
 		def initialize(name)
@@ -156,7 +156,12 @@
 
 	# Initialize and deal cards for the game
 	game = Game.new("Player", text_player_card, text_dealer_card)
-	game.deal_cards_initially
+
+	on :key_down do |event|
+		if event.key == "d" || event.key == "D"  # Deal cards when 'd' or 'D' is pressed
+			game.deal_cards_initially
+		end
+	end
 
 	# Show the window
 	show
