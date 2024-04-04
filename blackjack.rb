@@ -65,7 +65,12 @@
 				"Clubs" => "♣",
 				"Spades" => "♠"
 			}
-			text_object.text = "Card: #{card.rank} #{suit_icons[card.suit]}"
+			#text_object.text = "Card: #{card.rank} #{suit_icons[card.suit]}"
+			card_text = "Card: #{card.rank} #{suit_icons[card.suit]}"
+			puts "Updating card text: #{card_text}"  # Add this line for debugging
+			text_object.text = card_text
+
+
 		end
 	end # end game
 
@@ -163,19 +168,6 @@
 		end
 	end
 
+
 	# Show the window
 	show
-
-#	game = Game.new("Player") # new game
-	#game.deal_cards_initially # do initial dealing
-
-	#blocking
-#	game.player_turn do
-		#
-#	game.dealer_turn do
-#		#
-#	end
-
-
-	#show window
-	#show
