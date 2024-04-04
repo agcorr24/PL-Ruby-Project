@@ -16,10 +16,10 @@ set title: "Blackjack", background: 'gray', resizable: true
 Image.new("blackjack-table.png", x: 80, y:80, width:450, height: 350, z:1)
 
 	# Blank card to display shuffled cards
-	Image.new("blankcard.png", x: 250, y:20, width: 50, height: 75, z:5)
-	Image.new("blankcard.png", x: 310, y:20, width: 50, height: 75, z:5)
-	Image.new("blankcard.png", x: 190, y:320, width: 100, height: 150, z:5)
-	Image.new("blankcard.png", x: 310, y:320, width: 100, height: 150, z:5)
+	dealer_card1 = Image.new("blankcard.png", x: 250, y: 20, width: 50, height: 75, z: 5)
+	dealer_card2 = Image.new("blankcard.png", x: 310, y: 20, width: 50, height: 75, z: 5)
+	player_card1 = Image.new("blankcard.png", x: 190, y: 320, width: 100, height: 150, z: 5)
+	player_card2 = Image.new("blankcard.png", x: 310, y: 320, width: 100, height: 150, z: 5)
 
 	
 song = Music.new('musicloop.mp3') #https://www.ruby2d.com/learn/audio/
@@ -32,33 +32,40 @@ play = Sound.new('playcard.mp3')
 shuffle.play
 
 # Create text objects for displaying card information
-text_player_card = Text.new("", x: 365, y: 320, size: 20, color: 'white')
-text_dealer_card = Text.new("", x: 280, y: 20, size: 20, color: 'white')
+text_dealer_card1 = Text.new("", x: 200, y: 50, size: 20, color: 'white') 
+text_dealer_card2 = Text.new("", x: 375, y: 50, size: 20, color: 'white')
+text_player_card1 = Text.new("", x: 135, y: 400, size: 20, color: 'white') 
+text_player_card2 = Text.new("", x: 420, y: 400, size: 20, color: 'white')
 
 # Game class
 class Game
-	def initialize(player, text_player_card, text_dealer_card)
+	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2)
 		@deck = Deck.new
 		@player = User.new(player)
 		@dealer = Dealer.new
-		@text_player_card = text_player_card
-		@text_dealer_card = text_dealer_card
+		@text_player_card1 = text_player_card1
+		@text_player_card2 = text_player_card2
+		@text_dealer_card1 = text_dealer_card1
+		@text_dealer_card2 = text_dealer_card2
 	  end
 	
 	  def deal_cards_initially
 		2.times do
 		  player_card = @deck.draw
 		  dealer_card = @deck.draw
-	
+	  
 		  @player.add_card(player_card)
-		  update_card_text(@text_player_card, player_card)
-	
+		  update_card_text(@text_player_card1, player_card) if @player.player_hand.size == 1
+		  update_card_text(@text_player_card2, player_card) if @player.player_hand.size == 2
+	  
 		  @dealer.add_card(dealer_card)
-		  update_card_text(@text_dealer_card, dealer_card)
+		  update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
+		  update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 2
 		end
 	  end
-		
-	private
+	  
+	  private
+	
 
 	def update_card_text(text_object, card)
 		suit_icons = {
@@ -66,11 +73,9 @@ class Game
 			"Diamonds" => "♦",
 			"Clubs" => "♣",
 			"Spades" => "♠"
-		}
-			#text_object.text = "Card: #{card.rank} #{suit_icons[card.suit]}"
-			card_text = "Card: #{card.rank} #{suit_icons[card.suit]}"
-			puts "Updating card text: #{card_text}"  # Add this line for debugging
-			text_object.text = card_text
+		  }
+		  card_text = "#{card.rank} #{suit_icons[card.suit]}"
+		  text_object.text = card_text
 		end
 	end # end game
 
@@ -157,12 +162,12 @@ end # end Dealer
 
 
 # Initialize and deal cards for the game
-game = Game.new("Player", text_player_card, text_dealer_card)
-	
+game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2)
+
 on :key_down do |event|
-	if event.key == "d" || event.key == "D"  # Deal cards when 'd' or 'D' is pressed
-		game.deal_cards_initially
-	end
+  if event.key == "d" || event.key == "D"  # Deal cards when 'd' or 'D' is pressed
+    game.deal_cards_initially
+  end
 end
 
 # Show the window
