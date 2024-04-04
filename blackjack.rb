@@ -16,8 +16,9 @@
 	Image.new("blackjack-table.png", x: 80, y:80, width:450, height: 350, z:1)
 
 	# Blank card to display shuffled cards
-	Image.new("blankcard.png", x: 255, y:320, width: 100, height: 150, z:5)
 	Image.new("blankcard.png", x: 280, y:20, width: 50, height: 75, z:5)
+	Image.new("blankcard.png", x: 190, y:320, width: 100, height: 150, z:5)
+	Image.new("blankcard.png", x: 310, y:320, width: 100, height: 150, z:5)
 
 	
 	song = Music.new('musicloop.mp3') #https://www.ruby2d.com/learn/audio/
