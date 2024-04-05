@@ -38,7 +38,7 @@ shuffle.play
 # Create text objects for displaying card information
 # for dealer
 text_dealer_card1 = Text.new("", x: 200, y: 50, size: 20, color: 'white') 
-text_dealer_card2 = Text.new("", x: 375, y: 50, size: 20, color: 'white')
+#text_dealer_card2 = Text.new("", x: 375, y: 50, size: 20, color: 'white')
 
 # for player
 text_player_card1 = Text.new("", x: 135, y: 400, size: 20, color: 'white') 
@@ -47,33 +47,43 @@ text_player_card2 = Text.new("", x: 420, y: 400, size: 20, color: 'white')
 # Game class
 class Game
 	# intiialize game, player, dealer, and text boxes for card values
-	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2)
-		@deck = Deck.new
-		@player = User.new(player)
-		@dealer = Dealer.new
-		@text_player_card1 = text_player_card1
-		@text_player_card2 = text_player_card2
-		@text_dealer_card1 = text_dealer_card1
-		@text_dealer_card2 = text_dealer_card2
-	  end
-
+	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1)
+	  @deck = Deck.new
+	  @player = User.new(player)
+	  @dealer = Dealer.new
+	  @text_player_card1 = text_player_card1
+	  @text_player_card2 = text_player_card2
+	  @text_dealer_card1 = text_dealer_card1
+	end
+  
 	# only shuffles at beginning - initial deal
 	def deal_cards_initially
-		2.times do
+	  2.times do
 		player_card = @deck.draw
 		dealer_card = @deck.draw
-	  
+  
 		@player.add_card(player_card)
 		# initial deal for player
 		update_card_text(@text_player_card1, player_card) if @player.player_hand.size == 1
 		update_card_text(@text_player_card2, player_card) if @player.player_hand.size == 2
-	  
+  
 		@dealer.add_card(dealer_card)
 		# initial deal for dealer
 		update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
-		update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 2
 	  end
-	end 
+	end
+  
+	# if player wants to add another card to their sum
+	def hit
+		new_card = @deck.draw
+		@player.add_card(new_card) # Fixed reference to @player
+		update_card_text(@text_player_card2, new_card) # Update the text for the new card
+	  end
+  
+	# if player wants to keep current sum
+	def stand
+	  # Implement dealer logic here, if needed
+	end
 
 	private 
 	
@@ -88,6 +98,8 @@ class Game
 		  card_text = "#{card.rank} #{suit_icons[card.suit]}"
 		  text_object.text = card_text
 		end
+
+
 	end # end game
 
 
@@ -111,13 +123,24 @@ class Game
 class Card
 	# attribute features in ruby that creates getter methods so we can easily change them:
 	# https://medium.com/@rossabaker/what-is-the-purpose-of-attr-accessor-in-ruby-3bf3f423f573#:~:text=to%20help%20out.-,attr_reader,color%20%23%20%3C%2D%2D%20Getter%20methods
-	attr_reader :rank, :suit
+	attr_reader :rank, :suit, :value
 	# initialize card rank(s) and suite(s)
 	def initialize (rank, suit)
 		@rank = rank
 		@suit = suit
+		@value = calculate_value
 	end
-end
+
+	def calculate_value
+		if ['J', 'Q', 'K'].include?(@rank)
+			10
+		elsif @rank == 'A'
+			11
+		else
+			@rank.to_i
+		end
+	end
+end # end Card
 
 # Deck class
 class Deck
@@ -136,29 +159,35 @@ class Deck
 	end
 	
 	def shuffle_cards
-	@cards.shuffle!
+		@cards.shuffle!
 	end
 	
 	def draw
-	@cards.pop
-	end
+		@cards.pop || Card.new("", "")  # Ensure draw returns a valid card object
+	  end
 end # end Deck
 	
 # User class
 class User
 	attr_reader :player_hand, :name
+  
 	def initialize(name)
-		@name = name
-		@player_hand = []
+	  @name = name
+	  @player_hand = [] # Initialize player_hand as an empty array
 	end
-	
+  
 	def start_game
+	  # Implement if needed
 	end
-
+  
+	def total 
+	  @player_hand.map(&:value).sum
+	end
+  
 	def add_card(card)
-		@player_hand << card
+	  @player_hand << card
 	end
-end # end User
+  end # end User  
 
 # Dealer class
 class Dealer
@@ -174,13 +203,18 @@ end # end Dealer
 
 
 # Initialize and deal cards for the game
-game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2)
+game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1)
 
+# Event listeners for keyboard input
 on :key_down do |event|
-  if event.key == "d" || event.key == "D"  # Deal cards when 'd' or 'D' is pressed
-    game.deal_cards_initially
+	if event.key == "d" || event.key == "D"  # Deal cards when 'd' or 'D' is pressed
+	  game.deal_cards_initially
+	elsif event.key == "h" || event.key == "H"  # Hit when 'h' or 'H' is pressed
+	  game.hit
+	elsif event.key == "s" || event.key == "S"  # Stand when 's' or 'S' is pressed
+	  game.stand
+	end
   end
-end
-
+  
 # Show the window
 show
