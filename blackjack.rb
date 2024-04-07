@@ -44,16 +44,20 @@ text_dealer_card1 = Text.new("", x: 200, y: 50, size: 20, color: 'white')
 text_player_card1 = Text.new("", x: 135, y: 400, size: 20, color: 'white') 
 text_player_card2 = Text.new("", x: 420, y: 400, size: 20, color: 'white')
 
+# for card values
+text_player_total = Text.new("", x: 30, y: 360, size: 20, color: 'white', z: 10)
+
 # Game class
 class Game
 	# intiialize game, player, dealer, and text boxes for card values
-	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1)
+	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_player_total)
 	  @deck = Deck.new
 	  @player = User.new(player)
 	  @dealer = Dealer.new
 	  @text_player_card1 = text_player_card1
 	  @text_player_card2 = text_player_card2
 	  @text_dealer_card1 = text_dealer_card1
+	  @text_player_total = text_player_total
 	end
   
 	# only shuffles at beginning - initial deal
@@ -71,6 +75,7 @@ class Game
 		# initial deal for dealer
 		update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
 	  end
+	  update_player_total
 	end
   
 	# if player wants to add another card to their sum
@@ -78,11 +83,14 @@ class Game
 		new_card = @deck.draw
 		@player.add_card(new_card) # Fixed reference to @player
 		update_card_text(@text_player_card2, new_card) # Update the text for the new card
-	  end
+
+		update_player_total
+	end
   
 	# if player wants to keep current sum
 	def stand
 	  # Implement dealer logic here, if needed
+	  dealer_turn
 	end
 
 	private 
@@ -99,9 +107,11 @@ class Game
 		  text_object.text = card_text
 		end
 
-
-	end # end game
-
+		def update_player_total
+			total_value = @player.total
+			@text_player_total.text = "Total: #{total_value} "
+		end
+	end 
 
 	#blocking
 	#https://medium.com/rubycademy/the-yield-keyword-603a850b8921
@@ -110,14 +120,24 @@ class Game
 	end
 
 	def dealer_turn(&block)
-		yield if block_given?
+		#yield if block_given?
+		while @dealer.total < 17
+			dealer_hit
+			yield if block_given? # Yield to a block if provided
+		  end
 	end
+
+	def dealer_hit
+		new_card = @deck.draw
+		@dealer.add_card(new_card)
+  		update_card_text(@text_dealer_card2, new_card)
+  	end
 
 	# regular expression and mapping
 	def check_for_blackjack(player)
 		#
 	end
-#end
+#end game
 
 
 class Card
@@ -181,7 +201,21 @@ class User
 	end
   
 	def total 
-	  @player_hand.map(&:value).sum
+		total_value = 0
+		aces_count = 0
+
+	  @player_hand.each do |card|
+		total_value += card.value
+		aces_count += 1 if card.rank == 'A'
+	  end
+
+	  # adjust value if there are aces
+	  while total_value > 21 && aces_count > 0
+		total_value -= 10
+		aces_count -= 1
+	  end
+
+	  total_value
 	end
   
 	def add_card(card)
@@ -203,7 +237,7 @@ end # end Dealer
 
 
 # Initialize and deal cards for the game
-game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1)
+game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_player_total)
 
 # Event listeners for keyboard input
 on :key_down do |event|
