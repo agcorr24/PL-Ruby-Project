@@ -38,7 +38,7 @@ shuffle.play
 # Create text objects for displaying card information
 # for dealer
 text_dealer_card1 = Text.new("", x: 200, y: 50, size: 20, color: 'white') 
-#text_dealer_card2 = Text.new("", x: 375, y: 50, size: 20, color: 'white')
+text_dealer_card2 = Text.new("", x: 375, y: 50, size: 20, color: 'white')
 
 # for player
 text_player_card1 = Text.new("", x: 135, y: 400, size: 20, color: 'white') 
@@ -46,11 +46,12 @@ text_player_card2 = Text.new("", x: 420, y: 400, size: 20, color: 'white')
 
 # for card values
 text_player_total = Text.new("", x: 30, y: 360, size: 20, color: 'white', z: 10)
+text_dealer_total = Text.new("", x: 380, y: 50, size: 20, color: 'white', z: 10)
 
 # Game class
 class Game
 	# intiialize game, player, dealer, and text boxes for card values
-	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_player_total)
+	def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_player_total, text_dealer_total)
 	  @deck = Deck.new
 	  @player = User.new(player)
 	  @dealer = Dealer.new
@@ -58,6 +59,7 @@ class Game
 	  @text_player_card2 = text_player_card2
 	  @text_dealer_card1 = text_dealer_card1
 	  @text_player_total = text_player_total
+	  @text_dealer_total = text_dealer_total
 	end
   
 	# only shuffles at beginning - initial deal
@@ -76,6 +78,7 @@ class Game
 		update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
 	  end
 	  update_player_total
+	  #update_dealer_total
 	end
   
 	# if player wants to add another card to their sum
@@ -91,6 +94,8 @@ class Game
 	def stand
 	  # Implement dealer logic here, if needed
 	  dealer_turn
+	  update_dealer_total
+
 	end
 
 	private 
@@ -110,6 +115,11 @@ class Game
 		def update_player_total
 			total_value = @player.total
 			@text_player_total.text = "Total: #{total_value} "
+		end
+
+		def update_dealer_total
+			total_value = @dealer.total
+			@text_dealer_total.text = "Total: #{total_value} "
 		end
 	end 
 
@@ -233,11 +243,29 @@ class Dealer
 	def add_card(card)
 		@dealer_hand << card
 	end
+
+	def total 
+		total_value = 0
+		aces_count = 0
+
+	  @dealer_hand.each do |card|
+		total_value += card.value
+		aces_count += 1 if card.rank == 'A'
+	  end
+
+	  # adjust value if there are aces
+	  while total_value > 21 && aces_count > 0
+		total_value -= 10
+		aces_count -= 1
+	  end
+
+	  total_value
+	end
 end # end Dealer
 
 
 # Initialize and deal cards for the game
-game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_player_total)
+game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_player_total, text_dealer_total)
 
 # Event listeners for keyboard input
 on :key_down do |event|
