@@ -1,3 +1,13 @@
+# TODO:
+# 1. change rectangle to card display
+# 2. regular expression for check for blackjack
+# 3. CHECK UNIQUE FEATURES
+# 4. DOUBLE CHECK BLOCKING LOGIC
+# 5. comments and some syntax stuff
+# 6. CHECK CRITERIA IN PACKET TO DOUBLE CHECK WHATEVER I MISSED HERE *********
+# 7. sounds ?????
+# 8. anything else ......
+
 require 'ruby2d'
 
 # Unique features:
@@ -49,46 +59,51 @@ text_player_total = Text.new("", x: 30, y: 360, size: 20, color: 'white', z: 10)
 text_dealer_total = Text.new("", x: 470, y: 50, size: 20, color: 'white', z: 10)
 
 # initialize dealer card 2 text with empty string
-text_dealer_card2.remove
+#text_dealer_card2.remove
 
 # Game class
 class Game
     # intiialize game, player, dealer, and text boxes for card values
     def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total)
-      @deck = Deck.new
-      @player = User.new(player)
-      @dealer = Dealer.new
-      @text_player_card1 = text_player_card1
-      @text_player_card2 = text_player_card2
-      @text_dealer_card1 = text_dealer_card1
-	  @text_dealer_card2 = text_dealer_card2
-      @text_player_total = text_player_total
-      @text_dealer_total = text_dealer_total
+		@deck = Deck.new
+		@player = User.new(player)
+		@dealer = Dealer.new
+		@text_player_card1 = text_player_card1
+		@text_player_card2 = text_player_card2
+		@text_dealer_card1 = text_dealer_card1
+		@text_dealer_card2 = text_dealer_card2
+		@text_player_total = text_player_total
+		@text_dealer_total = text_dealer_total
+		@initial_deal_completed = false
+
+	  # initialize dealer card 2 text with empty string
+	  text_dealer_card2.remove
     end
   
     # only shuffles at beginning - initial deal
     def deal_cards_initially
-      2.times do
-        player_card = @deck.draw
-        dealer_card = @deck.draw
-  
-        @player.add_card(player_card)
-        # initial deal for player
-        update_card_text(@text_player_card1, player_card) if @player.player_hand.size == 1
-        update_card_text(@text_player_card2, player_card) if @player.player_hand.size == 2
-  
-        @dealer.add_card(dealer_card)
-        # initial deal for dealer
-        update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
-		update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 1
-
-      end
-      update_player_total
-      #update_dealer_total
+		return if @initial_deal_completed
+		2.times do
+			player_card = @deck.draw
+			dealer_card = @deck.draw
+	  
+			@player.add_card(player_card)
+			# Initial deal for player
+			update_card_text(@text_player_card1, player_card) if @player.player_hand.size == 1
+			update_card_text(@text_player_card2, player_card) if @player.player_hand.size == 2
+	  
+			@dealer.add_card(dealer_card)
+			# Initial deal for dealer
+			update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
+			update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 1
+		  end
+		  update_player_total
+		  @initial_deal_completed = true
     end
   
     # if player wants to add another card to their sum
     def hit
+		return unless @initial_deal_completed
         new_card = @deck.draw
         @player.add_card(new_card) # Fixed reference to @player
         update_card_text(@text_player_card2, new_card) # Update the text for the new card
@@ -97,37 +112,39 @@ class Game
     end
   
     # if player wants to keep current sum
-    def stand
-      # Implement dealer logic here, if needed
-      dealer_turn
-      update_dealer_total
-	  update_card_text(@text_dealer_card2, @dealer.dealer_hand.last) if @dealer.dealer_hand.size == 2
+	def stand
+		return unless @initial_deal_completed
+		dealer_turn
+		update_dealer_total
+		update_card_text(@text_dealer_card2, @dealer.dealer_hand.last) if @dealer.dealer_hand.size == 2
+		@text_dealer_card2.add  # Add the text object to the window
 	end
 
     private 
     
     # to display on text for player and dealer - card values and suites
     def update_card_text(text_object, card)
-        suit_icons = {
+		suit_icons = {
             "Hearts" => "♥",
             "Diamonds" => "♦",
             "Clubs" => "♣",
             "Spades" => "♠"
           }
-          card_text = "#{card.rank} #{suit_icons[card.suit]}"
-          text_object.text = card_text
-        end
+		card_text = "#{card.rank} #{suit_icons[card.suit]}"
+        text_object.text = card_text
+	end
 
-        def update_player_total
-            total_value = @player.total
-            @text_player_total.text = "Total: #{total_value} "
-        end
+    # Blocking
+  	def player_turn(&block)
+    	yield if block_given?
+  	end
 
-        def update_dealer_total
-            total_value = @dealer.total
-            @text_dealer_total.text = "Total: #{total_value} "
-        end
-    end 
+  	def dealer_turn(&block)
+		while @dealer.total < 17
+			dealer_hit
+			yield if block_given? # Yield to a block if provide
+		end
+	end
 
     #blocking
     #https://medium.com/rubycademy/the-yield-keyword-603a850b8921
@@ -148,11 +165,23 @@ class Game
         @dealer.add_card(new_card)
     end
 
+	# Method to update the player's total based on the cards they have
+	def update_player_total
+		total_value = @player.total
+		@text_player_total.text = "Total: #{total_value} "
+	end
+
+	# Method to update the dealer's total based on the cards they have
+	def update_dealer_total
+		total_value = @dealer.total
+		@text_dealer_total.text = "Total: #{total_value} "
+	end
+
     # regular expression and mapping
     def check_for_blackjack(player)
         #
     end
-#end # end game
+end # end game
 
 
 class Card
@@ -207,8 +236,8 @@ class User
     attr_reader :player_hand, :name
   
     def initialize(name)
-      @name = name
-      @player_hand = [] # Initialize player_hand as an empty array
+		@name = name
+      	@player_hand = [] # Initialize player_hand as an empty array
     end
   
     def start_game
@@ -216,27 +245,26 @@ class User
     end
   
     def total 
-        total_value = 0
+		total_value = 0
         aces_count = 0
-
-      @player_hand.each do |card|
-        total_value += card.value
-        aces_count += 1 if card.rank == 'A'
-      end
-
-      # adjust value if there are aces
-      while total_value > 21 && aces_count > 0
-        total_value -= 10
-        aces_count -= 1
-      end
-
-      total_value
-    end
+		
+		@player_hand.each do |card|
+			total_value += card.value
+			aces_count += 1 if card.rank == 'A' 
+		end
+		# adjust value if there are aces
+      	while total_value > 21 && aces_count > 0
+        	total_value -= 10
+        	aces_count -= 1
+      	end
+		total_value
+	end
   
     def add_card(card)
-      @player_hand << card
-    end
-  end # end User  
+    	@player_hand << card
+	end
+
+end # end User  
 
 # Dealer class
 class Dealer
@@ -253,19 +281,18 @@ class Dealer
         total_value = 0
         aces_count = 0
 
-      @dealer_hand.each do |card|
-        total_value += card.value
-        aces_count += 1 if card.rank == 'A'
-      end
-
-      # adjust value if there are aces
-      while total_value > 21 && aces_count > 0
-        total_value -= 10
-        aces_count -= 1
-      end
-
-      total_value
-    end
+		@dealer_hand.each do |card|
+			total_value += card.value
+        	aces_count += 1 if card.rank == 'A'
+		end
+		
+		# adjust value if there are aces
+      	while total_value > 21 && aces_count > 0
+        	total_value -= 10
+        	aces_count -= 1
+      	end
+		total_value
+	end
 end # end Dealer
 
 
