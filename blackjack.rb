@@ -1,12 +1,12 @@
 # TODO:
-# 1. change rectangle to card display
-# 2. regular expression for check for blackjack
-# 3. CHECK UNIQUE FEATURES
-# 4. DOUBLE CHECK BLOCKING LOGIC
-# 5. comments and some syntax stuff
-# 6. CHECK CRITERIA IN PACKET TO DOUBLE CHECK WHATEVER I MISSED HERE *********
-# 7. sounds ?????
-# 8. anything else ......
+# 1. change rectangle to card display - andrea
+# 2. regular expression for check for blackjack - rose 
+# 3. CHECK UNIQUE FEATURES - all 
+# 4. DOUBLE CHECK BLOCKING LOGIC - all 
+# 5. comments and some syntax stuff - anyone 
+# 6. CHECK CRITERIA IN PACKET TO DOUBLE CHECK WHATEVER I MISSED HERE ********* -- anyone
+# 7. sounds ????? -- andrea ?
+# 8. anything else ...... rose ?
 
 require 'ruby2d'
 
