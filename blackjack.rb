@@ -47,12 +47,12 @@ shuffle.play
 
 # Create text objects for displaying card information
 # for dealer
-text_dealer_card1 = Text.new("", x: 200, y: 50, size: 20, color: 'white') 
-text_dealer_card2 = Text.new("", x: 375, y: 50, size: 20, color: 'white')
+text_dealer_card1 = Text.new("", x: 250, y: 20, z: 6, size: 20, color: 'black') 
+text_dealer_card2 = Text.new("", x: 310, y: 20, z: 6, size: 20, color: 'black')
 
 # for player
-text_player_card1 = Text.new("", x: 135, y: 400, size: 20, color: 'white') 
-text_player_card2 = Text.new("", x: 420, y: 400, size: 20, color: 'white')
+text_player_card1 = Text.new("", x: 190, y: 320, z: 6, size: 40, color: 'black') 
+text_player_card2 = Text.new("", x: 310, y: 320, z: 6, size: 40, color: 'black')
 
 # for card values
 text_player_total = Text.new("", x: 30, y: 360, size: 20, color: 'white', z: 10)
@@ -167,19 +167,19 @@ class Game
 
 	# Method to update the player's total based on the cards they have
 	def update_player_total
-		total_value = @player.total
-		@text_player_total.text = "Total: #{total_value} "
+		player_total_value = @player.total
+		@text_player_total.text = "Total: #{player_total_value} "
 	end
 
 	# Method to update the dealer's total based on the cards they have
 	def update_dealer_total
-		total_value = @dealer.total
-		@text_dealer_total.text = "Total: #{total_value} "
+		dealer_total_value = @dealer.total
+		@text_dealer_total.text = "Total: #{dealer_total_value} "
 	end
 
     # regular expression and mapping
     def check_for_blackjack(player)
-        # 
+        #
     end
 end # end game
 
@@ -299,6 +299,9 @@ end # end Dealer
 # Initialize and deal cards for the game
 game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total)
 
+cheatExp = /212121/
+cheatActivated = false
+
 # Event listeners for keyboard input
 on :key_down do |event|
     if event.key == "d" || event.key == "D"  # Deal cards when 'd' or 'D' is pressed
@@ -307,6 +310,9 @@ on :key_down do |event|
       game.hit
     elsif event.key == "s" || event.key == "S"  # Stand when 's' or 'S' is pressed
       game.stand
+		elsif cheatExp.match?($stdin.gets.chomp)
+			cheatActivated = true
+			Text.new("Cheat activated!", x: 200, y: 200, size: 20, color: 'red')
     end
   end
   
