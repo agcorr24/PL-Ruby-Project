@@ -179,7 +179,7 @@ class Game
 
     # regular expression and mapping
     def check_for_blackjack(player)
-        #
+        # 
     end
 end # end game
 
