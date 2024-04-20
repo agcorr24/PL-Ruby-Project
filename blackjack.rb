@@ -75,6 +75,7 @@ class Game
         @text_player_total = text_player_total
         @text_dealer_total = text_dealer_total
         @initial_deal_completed = false
+        @blackjack_occurred = false
 
       # initialize dealer card 2 text with empty string
       text_dealer_card2.remove
@@ -103,12 +104,15 @@ class Game
   
     # if player wants to add another card to their sum
     def hit
-        return unless @initial_deal_completed
+        return unless @initial_deal_completed && !@blackjack_occurred
         new_card = @deck.draw
         @player.add_card(new_card) # Fixed reference to @player
         update_card_text(@text_player_card2, new_card) # Update the text for the new card
 
         update_player_total
+
+        # Check for blackjack 
+        check_for_blackjack(@player)
     end
   
     # if player wants to keep current sum
@@ -118,6 +122,9 @@ class Game
         update_dealer_total
         update_card_text(@text_dealer_card2, @dealer.dealer_hand.last) if @dealer.dealer_hand.size == 2
         @text_dealer_card2.add  # Add the text object to the window
+
+        # Check for blackjack 
+        check_for_blackjack(@player)
     end
 
     private 
@@ -177,10 +184,29 @@ class Game
         @text_dealer_total.text = "Total: #{dealer_total_value} "
     end
 
-    # regular expression and mapping
     def check_for_blackjack(player)
         #
-    end
+        blackjack_map = {
+        21 => "Blackjack! You win!",
+        # Modify the message for any total over 21 to indicate a bust
+        # Instead of specifying individual numbers, use a condition
+        :bust => "Bust! You've exceeded 21.",
+        # For any other total, no specific message is needed here
+    }
+
+        player_total = player.total
+
+        # Determine the appropriate message based on the player's total
+        message = player_total > 21 ? blackjack_map[:bust] : blackjack_map[player_total]
+        
+        # If a message exists for the player's total, display it
+        if message
+            # Create a Text object and add it to the window to display the message
+            Text.new(message, x: 200, y: 200, size: 20, color: 'red', z: 100).add
+            @blackjack_occurred = true if player_total == 21
+        end
+        #
+    end # end check_for_blackjack
 end # end game
 
 
@@ -247,18 +273,20 @@ class User
     def total 
         total_value = 0
         aces_count = 0
-        
+    
         @player_hand.each do |card|
             total_value += card.value
-            aces_count += 1 if card.rank == 'A' 
+            aces_count += 1 if card.rank == 'A'
         end
+    
         # adjust value if there are aces
         while total_value > 21 && aces_count > 0
             total_value -= 10
             aces_count -= 1
         end
+    
         total_value
-    end
+    end # end total
   
     def add_card(card)
         @player_hand << card
