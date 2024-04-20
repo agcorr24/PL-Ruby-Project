@@ -105,6 +105,7 @@ class Game
     # if player wants to add another card to their sum
     def hit
         return unless @initial_deal_completed && !@blackjack_occurred
+        return if @player.total > 21  # Prevent hitting if player's total exceeds 21
         new_card = @deck.draw
         @player.add_card(new_card) # Fixed reference to @player
         update_card_text(@text_player_card2, new_card) # Update the text for the new card
@@ -118,14 +119,22 @@ class Game
     # if player wants to keep current sum
     def stand
         return unless @initial_deal_completed
+    
         dealer_turn
         update_dealer_total
         update_card_text(@text_dealer_card2, @dealer.dealer_hand.last) if @dealer.dealer_hand.size == 2
         @text_dealer_card2.add  # Add the text object to the window
-
+    
         # Check for blackjack 
         check_for_blackjack(@player)
-    end
+        
+        # Check if dealer's total is greater than player's and closer to 21
+        if @dealer.total > @player.total && @dealer.total <= 21
+          # Display a message
+          Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
+          Text.new("Dealer is closer to 21! You lose!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
+        end
+    end # end stand
 
     private 
     
@@ -188,10 +197,7 @@ class Game
         #
         blackjack_map = {
         21 => "Blackjack! You win!",
-        # Modify the message for any total over 21 to indicate a bust
-        # Instead of specifying individual numbers, use a condition
         :bust => "Bust! You've exceeded 21.",
-        # For any other total, no specific message is needed here
     }
 
         player_total = player.total
@@ -202,8 +208,8 @@ class Game
         # If a message exists for the player's total, display it
         if message
             # Create a Text object and add it to the window to display the message
+            Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
             Text.new(message, x: 200, y: 200, size: 20, color: 'red', z: 100).add
-            @blackjack_occurred = true if player_total == 21
         end
         #
     end # end check_for_blackjack
@@ -314,7 +320,7 @@ class Dealer
             aces_count += 1 if card.rank == 'A'
         end
         
-        # adjust value if there are aces
+        # Adjust value of aces
         while total_value > 21 && aces_count > 0
             total_value -= 10
             aces_count -= 1
