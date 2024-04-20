@@ -220,8 +220,8 @@ class Card
     # attribute features in ruby that creates getter methods so we can easily change them:
     # https://medium.com/@rossabaker/what-is-the-purpose-of-attr-accessor-in-ruby-3bf3f423f573#:~:text=to%20help%20out.-,attr_reader,color%20%23%20%3C%2D%2D%20Getter%20methods
     attr_reader :rank, :suit, :value
-    # initialize card rank(s) and suite(s)
-    def initialize (rank, suit)
+    
+    def initialize(rank, suit)
         @rank = rank
         @suit = suit
         @value = calculate_value
@@ -244,11 +244,10 @@ class Deck
     
     def initialize
         @cards = []
-        # Generate the deck of cards
         %w(Hearts Diamonds Clubs Spades).each do |suit|
             %w(2 3 4 5 6 7 8 9 10 J Q K A).each do |rank|
-            card = Card.new(rank, suit)
-            @cards << card
+                card = Card.new(rank, suit)
+                @cards << card
             end
         end
         shuffle_cards
@@ -259,8 +258,8 @@ class Deck
     end
     
     def draw
-        @cards.pop || Card.new("", "")  # Ensure draw returns a valid card object
-      end
+        @cards.pop || Card.new("", "")
+    end
 end # end Deck
     
 # User class
@@ -269,7 +268,7 @@ class User
   
     def initialize(name)
         @name = name
-        @player_hand = [] # Initialize player_hand as an empty array
+        @player_hand = []
     end
   
     def start_game
@@ -285,24 +284,23 @@ class User
             aces_count += 1 if card.rank == 'A'
         end
     
-        # adjust value if there are aces
         while total_value > 21 && aces_count > 0
             total_value -= 10
             aces_count -= 1
         end
     
         total_value
-    end # end total
+    end
   
     def add_card(card)
         @player_hand << card
     end
-
 end # end User  
 
 # Dealer class
 class Dealer
     attr_reader :dealer_hand
+    
     def initialize
         @dealer_hand = []
     end
@@ -320,7 +318,6 @@ class Dealer
             aces_count += 1 if card.rank == 'A'
         end
 
-        # Adjust value of aces
         while total_value > 21 && aces_count > 0
             total_value -= 10
             aces_count -= 1
