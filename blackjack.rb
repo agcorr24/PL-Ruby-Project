@@ -314,12 +314,12 @@ class Dealer
     def total 
         total_value = 0
         aces_count = 0
-    
+
         @dealer_hand.each do |card|
             total_value += card.value
             aces_count += 1 if card.rank == 'A'
         end
-        
+
         # Adjust value of aces
         while total_value > 21 && aces_count > 0
             total_value -= 10
