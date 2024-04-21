@@ -260,20 +260,20 @@ class User
     end
   
     def total 
-        total_value = 0
+        player_total_value = 0
         aces_count = 0
     
         @player_hand.each do |card|
-            total_value += card.value
+            player_total_value += card.value
             aces_count += 1 if card.rank == 'A'
         end
     
-        while total_value > 21 && aces_count > 0
-            total_value -= 10
+        while player_total_value > 21 && aces_count > 0
+            player_total_value -= 10
             aces_count -= 1
         end
     
-        total_value
+        player_total_value
     end
   
     def add_card(card)
@@ -294,21 +294,21 @@ class Dealer
     end
 
     def total 
-        total_value = 0
+        dealer_total_value = 0
         aces_count = 0
 
         @dealer_hand.each do |card|
-            total_value += card.value
+            dealer_total_value += card.value
             aces_count += 1 if card.rank == 'A'
         end
 
         # Adjust the total value for aces
-        while total_value > 21 && aces_count > 0
-            total_value -= 10
+        while dealer_total_value > 21 && aces_count > 0
+            dealer_total_value -= 10
             aces_count -= 1
         end
         
-        total_value
+        dealer_total_value
     end
 end # end Dealer
 
