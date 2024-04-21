@@ -80,7 +80,7 @@ class Game
             @dealer.add_card(dealer_card)
             # Initial deal for dealer
             update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
-            update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 1
+            update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 2
           end
           update_player_total
           @initial_deal_completed = true
@@ -162,6 +162,7 @@ class Game
         while @dealer.total < 17
             dealer_hit
             yield if block_given? # yield to a block if provided
+            update_dealer_total
           end
     end
 
