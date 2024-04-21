@@ -111,6 +111,10 @@ class Game
 
         # Check for blackjack 
         check_for_blackjack(@player)
+        if @blackjack_occurred
+            # blackjack has occurred, player cannot stand
+            return
+        end
         
         # Check if dealer's total is greater than player's and closer to 21
         if @dealer.total > @player.total && @dealer.total <= 21
