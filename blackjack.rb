@@ -392,8 +392,11 @@ on :key_down do |event|
 			# Start the game with the entered username
 			game_started = true
 			Text.new(username, x: 50, y: 50, color: 'white')
-		elsif username.match?(cheat_pattern)
-				cheat_activated = true
+		# Check if cheat pattern entered
+		if username.match?(cheat_pattern)
+				Window.clear
+				Text.new("You win!")
+		end
 		end
 	elsif event.key == "backspace"
 		username = username[0..-2]
@@ -413,11 +416,6 @@ on :key_down do |event|
       game.stand
     end
   end
-end
-
-if cheat_activated
-	Window.clear
-	Text.new("You win!")
 end
   
 # show window 
