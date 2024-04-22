@@ -182,16 +182,28 @@ class Game
             # blackjack has occurred, player cannot stand
             return
         end
-        
+
         # Check if dealer's total is greater than player's and closer to 21
         if @dealer.total > @player.total && @dealer.total <= 21
             Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
-            Text.new("Dealer is closer to 21! You lose!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
-        
+						if @dealer.total == 21
+							Text.new("Dealer got Blackjack. You lose!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
+						else
+            	Text.new("Dealer is closer to 21! You lose!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
+						end
+				# Check if player is closer to 21 
         elsif @player.total > @dealer.total && @player.total <= 21
-            Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
-            Text.new("You are closer to 21! You win!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
-        end 
+					Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
+          Text.new("You are closer to 21! You win!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
+				# Check if dealer went over
+				elsif @dealer.total > 21
+						Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
+            Text.new("Dealer went over 21. You win!", x: 180, y: 200, size: 20, color: 'red', z: 100).add
+				# Check if tie
+				elsif @dealer.total == @player.total
+						Rectangle.new(x: 170, y: 170, width: 300, height: 100, color: 'white', z: 99)
+            Text.new("It's a tie! No one wins.", x: 180, y: 200, size: 20, color: 'red', z: 100).add
+				end
     end # end stand
 
     private 
