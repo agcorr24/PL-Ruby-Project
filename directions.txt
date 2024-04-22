@@ -1,0 +1,22 @@
+To download: https://www.ruby2d.com/learn/get-started/
+** if Ruby2D is already downloaded onto your system, skip URL
+
+** use MacOS Download for the best experience
+- open provided link
+- choose between Linux, MacOS, and Windows
+- follow instructions indicated
+
+** both Snowman.rb and Blackjack.rb are run on Ruby2D
+
+Snowman.rb
+to run program: ruby Snowman.rb [type into the console]
+- type a letter to enter a guess
+- correct word will be displayed in the console for the duration of the game
+
+Blackjack.rb
+to run program: ruby Blackjack.rb [type into the consolse]
+- type in a username of your choice, then hit enter
+- for the initial deal, press the 'd' or 'D' key
+- to hit, press the 'h' or 'H' key
+- to stand, press the 's' or 'S' key
+- to activate cheat, type 'iwanttowin21'
