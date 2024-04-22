@@ -221,11 +221,11 @@ class Game
     end
 
     def dealer_turn(&block)
-        while @dealer.total < 17
-            dealer_hit
+       # while @dealer.total < 17
+       #     dealer_hit
             yield if block_given? # yield to a block if provided
-            update_dealer_total
-          end
+       #     update_dealer_total
+       #   end
     end
 
     def dealer_hit
