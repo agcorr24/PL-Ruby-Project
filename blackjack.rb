@@ -178,10 +178,6 @@ class Game
 
         # Check for blackjack 
         check_for_blackjack(@player)
-        if @blackjack_occurred
-            # blackjack has occurred, player cannot stand
-            return
-        end
 
         # Check if dealer's total is greater than player's and closer to 21
         if @dealer.total > @player.total && @dealer.total <= 21
@@ -219,13 +215,6 @@ class Game
         yield if block_given?
     end
 
-    def dealer_turn(&block)
-        while @dealer.total < 17
-            dealer_hit
-            yield if block_given? # yield to a block if provide
-        end
-    end
-
     #blocking
     def player_turn(&block)
         yield if block_given?
@@ -242,6 +231,7 @@ class Game
     def dealer_hit
         new_card = @deck.draw
         @dealer.add_card(new_card)
+				update_dealer_total
     end
 
     # update player's total based on the cards they have
