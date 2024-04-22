@@ -26,7 +26,7 @@ player_card2 = Image.new("blankcard.png", x: 310, y: 320, width: 100, height: 15
 # sound effects
 song = Music.new('musicloop.mp3') #https://www.ruby2d.com/learn/audio/
 song.loop = true
-song.volume = 5
+song.volume = 3
 shuffle = Sound.new('cardshuffle.wav')
 shuffle.play
 song.play
