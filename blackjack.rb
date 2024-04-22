@@ -377,8 +377,11 @@ game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card
 
 username = ""
 valid = /\A[a-zA-Z0-9_]+\z/ # regular expression for username
+cheat_pattern = /iwanttowin21/
 game_started = false
 prompt = Text.new("Enter a username!", x: 50, y:50, color:'white')
+
+cheat_activated = false
 
 on :key_down do |event|
 	if event.key == "return"  # Check if the Enter key is pressed
@@ -389,6 +392,8 @@ on :key_down do |event|
 			# Start the game with the entered username
 			game_started = true
 			Text.new(username, x: 50, y: 50, color: 'white')
+		elsif username.match?(cheat_pattern)
+				cheat_activated = true
 		end
 	elsif event.key == "backspace"
 		username = username[0..-2]
@@ -408,6 +413,11 @@ on :key_down do |event|
       game.stand
     end
   end
+end
+
+if cheat_activated
+	Window.clear
+	Text.new("You win!")
 end
   
 # show window 
