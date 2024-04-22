@@ -1,5 +1,5 @@
-
-# Class definition(s) for a Ruby Snowman Word-Guessing game  **** FINISH THIS *********************************
+# Snowman Word Game Common Program
+# Ruby Group: Andrea Correia, Frances Gallagher, and Rose Stefanidakis
 
 require 'ruby2d'
 require 'set'
