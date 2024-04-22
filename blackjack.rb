@@ -45,10 +45,13 @@ text_player_card2 = Text.new("", x: 310, y: 320, z: 6, size: 40, color: 'black')
 text_player_total = Text.new("", x: 30, y: 360, size: 20, color: 'white', z: 10)
 text_dealer_total = Text.new("", x: 470, y: 50, size: 20, color: 'white', z: 10)
 
+# initialize an empty array for player_card_texts
+player_card_texts = []
+
 # Game class
 class Game
     # intiialize game, player, dealer, and text boxes for card values
-    def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total)
+    def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total, player_card_texts)
         @deck = Deck.new
         @player = User.new(player)
         @dealer = Dealer.new
@@ -58,47 +61,111 @@ class Game
         @text_dealer_card2 = text_dealer_card2
         @text_player_total = text_player_total
         @text_dealer_total = text_dealer_total
+        @player_card_texts = player_card_texts
         @initial_deal_completed = false
         @blackjack_occurred = false
 
-      # initialize dealer card 2 text with empty string
-      text_dealer_card2.remove
+        # initialize dealer card 2 text with empty string
+        text_dealer_card2.remove
+        @suit_icons = {
+            "Hearts" => "♥",
+            "Diamonds" => "♦",
+            "Clubs" => "♣",
+            "Spades" => "♠"
+        }
     end
-  
+
     # only shuffles at beginning - initial deal
     def deal_cards_initially
         return if @initial_deal_completed
         2.times do
             player_card = @deck.draw
             dealer_card = @deck.draw
-      
+
             @player.add_card(player_card)
-            # Initial deal for player
+            # initial deal for player
             update_card_text(@text_player_card1, player_card) if @player.player_hand.size == 1
             update_card_text(@text_player_card2, player_card) if @player.player_hand.size == 2
-      
+
             @dealer.add_card(dealer_card)
-            # Initial deal for dealer
+            # initial deal for dealer
             update_card_text(@text_dealer_card1, dealer_card) if @dealer.dealer_hand.size == 1
             update_card_text(@text_dealer_card2, dealer_card) if @dealer.dealer_hand.size == 2
-          end
-          update_player_total
-          @initial_deal_completed = true
+        end
+        update_player_total
+        @initial_deal_completed = true
     end
-  
+
     # if player wants to add another card to their sum
     def hit
         return unless @initial_deal_completed && !@blackjack_occurred
-        return if @player.total > 21  # Prevent hitting if player's total exceeds 21
+        return if @player.total > 21  # prevent hitting if player's total exceeds 21
         new_card = @deck.draw
-        @player.add_card(new_card) # Fixed reference to @player
-        update_card_text(@text_player_card2, new_card) # Update the text for the new card
+        @player.add_card(new_card)
+
+        x_offset = 200 
+        y_offset = 320  # initial y-coordinate for the first additional card
+        vertical_spacing = 130  # vertical spacing between cards
+        horizontal_spacing = 10 
+
+
+        # Calculate the y-coordinate for the new card with spacing
+        next_card_y = @player_card_texts.empty? ? y_offset : @player_card_texts.last.y - vertical_spacing
+
+        # Create and add the new card rectangle
+        player_card_rect = Rectangle.new(
+            x: @text_player_card2.x + x_offset,
+            y: next_card_y,
+            width: 70,
+            height: 100,
+            color: 'white',
+            z: 6,
+        )
+        player_card_rect.add
+
+        # Create and add the new card text object
+        player_card_text = Text.new(
+            "#{new_card.rank} #{@suit_icons[new_card.suit]}",
+            x: player_card_rect.x + 10,
+            y: player_card_rect.y + 10,
+            z: 7,
+            size: 20,
+            color: 'black'
+        )
+        player_card_text.add
+
+        @player_card_texts << player_card_text
 
         update_player_total
 
-        # Check for blackjack 
+        # check for blackjack
         check_for_blackjack(@player)
     end
+
+    def create_player_card(card, x_offset, y_offset)
+        # create additional player card rectangle
+        player_card_rect = Rectangle.new(
+            x: @text_player_card2.x + x_offset, # position it to the right of player_card2
+            y: y_offset,
+            width: 70,
+            height: 100, 
+            color: 'white', 
+            z: 6,
+        )
+        player_card_rect.add
+
+        # update player's additional card text
+        player_card_text = Text.new("", x: player_card_rect.x + 10, y: player_card_rect.y + 10, z: 7, size: 20, color: 'black')
+        player_card_text.text = "#{card.rank} #{@suit_icons[card.suit]}"
+        @player_card_texts << player_card_text
+
+        update_player_total
+
+
+        # check for blackjack
+        check_for_blackjack(@player)
+    end # end Hit
+
   
     # if player wants to keep current sum
     def stand
@@ -131,13 +198,7 @@ class Game
     
     # to display on text for player and dealer - card values and suites
     def update_card_text(text_object, card)
-        suit_icons = {
-            "Hearts" => "♥",
-            "Diamonds" => "♦",
-            "Clubs" => "♣",
-            "Spades" => "♠"
-          }
-        card_text = "#{card.rank} #{suit_icons[card.suit]}"
+        card_text = "#{card.rank} #{@suit_icons[card.suit]}"
         text_object.text = card_text
     end
 
@@ -315,7 +376,7 @@ end # end Dealer
 
 
 # initialize/deal cards for the game
-game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total)
+game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total, player_card_texts)
 
 username = ""
 valid = /\A[a-zA-Z0-9_]+\z/
@@ -358,4 +419,3 @@ end
   
 # show window 
 show
-
