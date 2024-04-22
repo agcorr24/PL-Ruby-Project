@@ -260,10 +260,6 @@ class User
         @player_hand = []
     end
   
-    def start_game
-      # Implement if needed
-    end
-  
     def total 
         player_total_value = 0
         aces_count = 0
@@ -321,22 +317,44 @@ end # end Dealer
 # initialize/deal cards for the game
 game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total)
 
-cheatExp = /212121/
-cheatActivated = false
+username = ""
+valid = /\A[a-zA-Z0-9_]+\z/
+game_started = false
+prompt = Text.new("Enter a username!", x: 50, y:50, color:'white')
+
+on :key_down do |event|
+	if event.key == "return"  # Check if the Enter key is pressed
+		# Check if the username is valid
+		if username.match?(valid)
+			# Valid username
+			prompt.remove  
+			# Start the game with the entered username
+			game_started = true
+			Text.new(username, x: 50, y: 50, color: 'white')
+		else
+			# Invalid username, display error message
+			error_text = Text.new("Invalid username. Usernames can only contain letters, numbers, and underscores.", x: 2, y: 3, size: 15, color: 'red')
+			error_text.add
+		end
+	elsif event.key == "backspace"
+		username = username[0..-2]
+	elsif event.key.length == 1 && event.key.match?(valid) 
+		username += event.key  
+	end
+end
 
 # event listeners for keyboard input
 on :key_down do |event|
+	if game_started
     if event.key == "d" || event.key == "D"  # deal when 'd' or 'D' key is pressed
       game.deal_cards_initially
     elsif event.key == "h" || event.key == "H"  # hit when 'h' or 'H' key is pressed
       game.hit
     elsif event.key == "s" || event.key == "S"  # stand when 's' or 'S' key is pressed
       game.stand
-        elsif cheatExp.match?($stdin.gets.chomp)
-            cheatActivated = true
-            Text.new("Cheat activated!", x: 200, y: 200, size: 20, color: 'red')
     end
   end
+end
   
 # show window 
 show
