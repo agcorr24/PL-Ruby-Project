@@ -26,11 +26,10 @@ player_card2 = Image.new("blankcard.png", x: 310, y: 320, width: 100, height: 15
 # sound effects
 song = Music.new('musicloop.mp3') #https://www.ruby2d.com/learn/audio/
 song.loop = true
-song.volume = 50
+song.volume = 5
 shuffle = Sound.new('cardshuffle.wav')
-deal = Sound.new('dealcard.wav')
-play = Sound.new('playcard.mp3')
 shuffle.play
+song.play
 
 # text objects for displaying card info
 # for dealer
@@ -102,7 +101,8 @@ class Game
         return if @player.total > 21  # prevent hitting if player's total exceeds 21
         new_card = @deck.draw
         @player.add_card(new_card)
-
+				deal = Sound.new('dealcard.wav')
+				deal.play
         x_offset = 200 
         y_offset = 320  # initial y-coordinate for the first additional card
         vertical_spacing = 130  # vertical spacing between cards
@@ -379,7 +379,7 @@ end # end Dealer
 game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total, player_card_texts)
 
 username = ""
-valid = /\A[a-zA-Z0-9_]+\z/
+valid = /\A[a-zA-Z0-9_]+\z/ # regular expression for username
 game_started = false
 prompt = Text.new("Enter a username!", x: 50, y:50, color:'white')
 
@@ -392,10 +392,6 @@ on :key_down do |event|
 			# Start the game with the entered username
 			game_started = true
 			Text.new(username, x: 50, y: 50, color: 'white')
-		else
-			# Invalid username, display error message
-			error_text = Text.new("Invalid username. Usernames can only contain letters, numbers, and underscores.", x: 2, y: 3, size: 15, color: 'red')
-			error_text.add
 		end
 	elsif event.key == "backspace"
 		username = username[0..-2]
