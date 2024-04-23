@@ -11,3 +11,4 @@ blackjack.rb: 70% original code -- borrowed code is indiciated in the program & 
 
 snowman.rb: 85% original code -- borrowed code is indiciated in the program & annotated bibliography
 -- emulates the game 'hangman' where the user types in letters trying to guess a given hidden word
+
