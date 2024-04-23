@@ -1,7 +1,8 @@
 # Andrea Correia, Fran Gallagher, Rose Stefanidakis 
 # CSCI324 Term Project
 # blackjack.rb - a game to simulate the card game blackjack, where the player/dealer attempt to reach a total of 21 without going over
-# Unique features: dynamic list, blocking, regular expressions, built in hash tables, duck typing 
+# run with: ruby blackjack.rb
+# Unique features: dynamic list, blocking, regular expressions, built in hash tables, duck typing, graphical interface
 
 require 'ruby2d'
 # window & background

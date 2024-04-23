@@ -19,4 +19,4 @@ to run program: ruby Blackjack.rb [type into the consolse]
 - for the initial deal, press the 'd' or 'D' key
 - to hit, press the 'h' or 'H' key
 - to stand, press the 's' or 'S' key
-- to activate cheat, type 'iwanttowin21'
+- to activate cheat, type 'iwanttowin21' then enter

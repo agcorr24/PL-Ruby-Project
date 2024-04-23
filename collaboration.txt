@@ -1,17 +1,32 @@
 Sources used:
 “Audio.” Ruby 2D - Audio, www.ruby2d.com/learn/audio/. Accessed 21 Apr. 2024. 
+
 Baker, Ross. “What Is the Purpose of Attr_accessor in Ruby?” Medium, Medium, 19 Mar. 2020, medium.com/@rossabaker/what-is-the-purpose-of-attr-accessor-in-ruby-3bf3f423f573. 
+
 Britt, James. “Class Regexp.” Class Regexp - RDoc Documentation, ruby-doc.org/3.2.2/Regexp.html. Accessed 22 Apr. 2024. 
+
 Castello, Jesus. “Mastering Ruby Regular Expressions.” RubyGuides, 24 Dec. 2022, www.rubyguides.com/2015/06/ruby-regex/. 
+
 Gault, Dustin. “Pros and Cons of the Ruby Programming Language in 2023.” Cybersecurity Consulting, DevOps Services, & Custom Software Development, NextLink Labs, 4 Oct. 2023, nextlinklabs.com/resources/insights/ruby-programming-language#:~:text=This%20means%20that%20in%20terms,more%20advanced%20or%20complex%20tasks. 
+
 Halmagean, Cezar. “Mastering Ruby Blocks in Less than 5 Minutes.” Mix & Go, Mix & Go, 19 Jan. 2015, mixandgo.com/learn/ruby/blocks. 
+
 Hogan, Brian. “Understanding Data Types in Ruby.” DigitalOcean, DigitalOcean, 26 Jan. 2023, www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby. 
+
 Kumar, Ankit. “Type Checking and Duck Typing in Ruby.” Code 360 by Coding Ninjas, 26 Mar. 2024, www.codingninjas.com/studio/library/type-checking-and-duck-typing-in-ruby. 
+
 Miller, Stephan. “What Is Ruby Used For?” Codecademy Blog, 9 Apr. 2024, www.codecademy.com/resources/blog/what-is-ruby-used-for/. 
+
 “Object-Oriented Programming in Ruby.” RubyGuides, 4 Apr. 2020, www.rubyguides.com/ruby-tutorial/object-oriented-programming/. 
+
 “Object-Oriented Programming in Ruby: Set 1.” GeeksforGeeks, GeeksforGeeks, 13 Aug. 2019, www.geeksforgeeks.org/object-oriented-programming-in-ruby-set-1/. 
+
 “Ruby: Blocks.” GeeksforGeeks, GeeksforGeeks, 25 Aug. 2022, www.geeksforgeeks.org/ruby-blocks/. 
+
 “Ruby.” About Ruby, www.ruby-lang.org/en/about/. Accessed 22 Apr. 2024. 
+
 RubyCademy, Tech -. “The Yield Keyword in Ruby.” RubyCademy, Medium, 11 Apr. 2018, medium.com/rubycademy/the-yield-keyword-603a850b8921. 
+
 Todorovic, Nikola. “Ruby Metaprogramming Is Even Cooler than It Sounds: Toptal®.” Toptal Engineering Blog, Toptal, 29 Oct. 2015, www.toptal.com/ruby/ruby-metaprogramming-cooler-than-it-sounds. 
+
 Wickramasinghe, Shanika. “Ruby Array 101: Primary Methods & How To Use Them.” Learnenough.Com, Learn Enough, 15 Jan. 2024, www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications. 
