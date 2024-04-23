@@ -1,6 +1,6 @@
 # Andrea Correia, Fran Gallagher, Rose Stefanidakis 
 # CSCI324 Term Project
-# blackjack.rb
+# blackjack.rb - a game to simulate the card game blackjack, where the player/dealer attempt to reach a total of 21 without going over
 # Unique features: dynamic list, blocking, regular expressions, built in hash tables, duck typing 
 
 require 'ruby2d'
@@ -37,7 +37,7 @@ player_card_texts = []
 
 # Game class
 class Game
-    # intiialize game, player, dealer, and text boxes for card values
+    # initialize game, player, dealer, and text boxes for card values
     def initialize(player, text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total, player_card_texts)
         @deck = Deck.new
         @player = User.new(player)
@@ -92,9 +92,9 @@ class Game
         y_offset = 320  # initial y-coordinate for the first additional card
         vertical_spacing = 130  # vertical spacing between cards
         horizontal_spacing = 10 
-        # Calculate the y-coordinate for the new card with spacing
+        # calculate the y-coordinate for the new card with spacing
         next_card_y = @player_card_texts.empty? ? y_offset : @player_card_texts.last.y - vertical_spacing
-        # Create and add the new card rectangle
+        # create and add the new card rectangle
         player_card_rect = Rectangle.new(
             x: @text_player_card2.x + x_offset,
             y: next_card_y,
@@ -332,7 +332,7 @@ end # end Dealer
 # initialize/deal cards for the game
 game = Game.new("Player", text_player_card1, text_player_card2, text_dealer_card1, text_dealer_card2, text_player_total, text_dealer_total, player_card_texts)
 
-# intialization 
+# initialization 
 username = ""
 valid = /\A[a-zA-Z0-9_]+\z/ # regular expression for username
 cheat_pattern = /iwanttowin21/
