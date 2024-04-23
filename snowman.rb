@@ -1,5 +1,6 @@
 # Snowman Word Game Common Program
 # Ruby Group: Andrea Correia, Frances Gallagher, and Rose Stefanidakis
+# Run with: ruby snowman.rb
 
 require 'ruby2d'
 require 'set'
