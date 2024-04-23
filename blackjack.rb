@@ -1,12 +1,8 @@
-# Unique features:
-# Dynamic list(doesn't have to be fixed): https://www.learnenough.com/blog/ruby-array#Ruby%20array%20uses%20and%20applications
-# CARDS, STATUS
-# list with mixes of types: PLAYER STATUS
-# blocking: https://mixandgo.com/learn/ruby/blocks: PLAYER AND DEALER TURNS
-# regular expressions: https://www.rubyguides.com/2015/06/ruby-regex/: RECOGNIZING BLACKJACK, password to start game, allows to cheat
-# built in hash tables: https://www.digitalocean.com/community/tutorials/understanding-data-types-in-ruby
-# CARDS
-# duck typing https://www.codingninjas.com/studio/library/type-checking-and-duck-typing-in-ruby
+# Andrea Correia, Fran Gallagher, Rose Stefanidakis 
+# CSCI324 Term Project
+# blackjack.rb
+
+# Unique features: dynamic list, blocking, regular expressions, built in hash tables, duck typing 
 
 require 'ruby2d'
 
