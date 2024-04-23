@@ -1,5 +1,4 @@
 Sources used:
-
 “Audio.” Ruby 2D - Audio, www.ruby2d.com/learn/audio/. Accessed 21 Apr. 2024. 
 Baker, Ross. “What Is the Purpose of Attr_accessor in Ruby?” Medium, Medium, 19 Mar. 2020, medium.com/@rossabaker/what-is-the-purpose-of-attr-accessor-in-ruby-3bf3f423f573. 
 Britt, James. “Class Regexp.” Class Regexp - RDoc Documentation, ruby-doc.org/3.2.2/Regexp.html. Accessed 22 Apr. 2024. 
