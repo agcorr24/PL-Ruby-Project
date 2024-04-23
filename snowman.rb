@@ -4,10 +4,8 @@
 require 'ruby2d'
 require 'set'
 
-#https://www.ruby2d.com/learn/window/
 set title: "Snowman Word Game", background: 'blue', resizable: true
 
-# https://www.rubyguides.com/ruby-tutorial/object-oriented-programming/
 class Game
     def initialize
         #initialize variables
@@ -33,9 +31,6 @@ class Game
     
     # Read in word file
     def read_file(filename)
-        # https://stackoverflow.com/questions/36140990/break-text-file-into-separate-words-and-store-in-array-in-ruby
-        # https://www.ruby-forum.com/t/file-contents-into-hash-table/193963/6
-        # https://www.educative.io/answers/what-is-the-chomp-method-in-ruby
         # Read the text file and store each word in a hash table
         words_hash = {}
 
@@ -81,7 +76,6 @@ class Game
     end # End guesses_left
 
     # To determine event behavior 
-    #https://www.ruby2d.com/learn/window/
 		def handle_input(letter)
 		return if @game_over # Return early if game is already over
 
@@ -118,7 +112,6 @@ class Game
 
     # Change guess display for letter inputs
     def editing_guess
-        # https://stackoverflow.com/questions/42705679/display-each-character-of-a-string-as-an-underscore-with-a-space-between-each-un
         guesses = [] # Array of letters guessed - starts as underscores
         guesses = @word.chars.map { |c| guesses.include?(c) ? c : '_' }.join(' ')
         puts guesses 
